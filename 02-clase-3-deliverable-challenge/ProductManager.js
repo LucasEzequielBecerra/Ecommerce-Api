@@ -45,7 +45,7 @@ class ProductManager {
         try {
             const productsFile = await this.getProducts()
             const productFinded = productsFile.find(p => p.id === prodId)
-            return productFinded ? productFinded : 'not found'
+            return productFinded ? productFinded : 'El producto con el id seleccionado, no existe'
         } catch (err) {
             console.log(err)
         }
@@ -54,13 +54,13 @@ class ProductManager {
     async deleteProduct(prodId) {
         try {
             const productsFile = await this.getProducts()
-            if (productsFile.find(p => p.id === prodId)) {
+            if (typeOf(await this.getProductById(prodId)) === 'object') {
                 const productsNotRemoved = productsFile.filter((prod) => prod.id !== prodId)
                 await fs.promises.writeFile(this.path, JSON.stringify(productsNotRemoved, null, 2))
                 // console.log(productsNotRemoved)
                 return productsNotRemoved
             } else {
-                return 'not found'
+                return 'El producto con el id seleccionado, no existe'
             }
         } catch (err) {
             console.log(err)
@@ -69,13 +69,15 @@ class ProductManager {
 
     async updateProduct(prodId, field) {
         try {
-
             const productFile = await this.getProductById(prodId)
-            const modifiedProduct = { ...productFile, ...field, id: prodId }
-
-            const productsFileToUpdated = await this.deleteProduct(prodId)
-            productsFileToUpdated.push(modifiedProduct)
-            await fs.promises.writeFile(this.path, JSON.stringify(productsFileToUpdated, null, 2))
+            if (typeof (productFile) === 'object') {
+                const modifiedProduct = { ...productFile, ...field, id: prodId }
+                const productsFileToUpdated = await this.deleteProduct(prodId)
+                productsFileToUpdated.push(modifiedProduct)
+                await fs.promises.writeFile(this.path, JSON.stringify(productsFileToUpdated, null, 2))
+            } else {
+                return 'El producto con el id seleccionado, no existe'
+            }
         } catch (err) {
             console.log(err)
         }
@@ -116,10 +118,9 @@ const test = async () => {
     // console.log('ask by id -------->', await productManager.getProductById(55))
 
     // await productManager.addProduct(obj1)
-    // await productManager.updateProduct(1, { title: 'lol' })
+    // await productManager.updateProduct(4, { title: 'lol' })
     // console.log(await productManager.deleteProduct(1))
     // console.log('first request -------->', await productManager.getProducts())
-
 
 
 }
