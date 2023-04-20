@@ -58,7 +58,7 @@ const productManager = new ProductManager()
 
 productManager.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin imagen', 'abc1234', 24)
 console.log('first asked ------------->', productManager.getProducts())
-productManager.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin imagen', 'abc1234', 24)
+productManager.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin imagen', 'abc12345', 24)
 console.log('second asked ------------->', productManager.getProducts())
 
 
