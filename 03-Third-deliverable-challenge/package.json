@@ -1,15 +1,15 @@
 {
   "name": "03-third-deliverable-challenge",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "express": "^4.18.2"
   }

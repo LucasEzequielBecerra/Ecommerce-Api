@@ -23,16 +23,11 @@ class ProductManager {
     }
 
     async addProduct(obj) {
-        const { title, description, price, thumbnail, stock } = obj
-        const product = {
-            title,
-            description,
-            price,
-            thumbnail,
-            stock,
-            id: await this.idGenerator(),
-        }
         try {
+            const product = {
+                id: await this.idGenerator(),
+                ...obj
+            }
             const productsFile = await this.getProducts()
             productsFile.push(product)
             await fs.promises.writeFile(this.path, JSON.stringify(productsFile, null, 2))
@@ -45,7 +40,7 @@ class ProductManager {
         try {
             const productsFile = await this.getProducts()
             const productFinded = productsFile.find(p => p.id === prodId)
-            return productFinded ? productFinded : 'El producto con el id seleccionado, no existe'
+            return productFinded ? productFinded : false
         } catch (err) {
             console.log(err)
         }
@@ -111,7 +106,7 @@ const obj1 = {
 
 const test = async () => {
 
-    // console.log('first request -------->', await productManager.getProducts()) 
+    console.log('first request -------->', await productManager.getProductById(3))
     // await productManager.addProduct(obj1)
     // await productManager.addProduct(obj1)
     // console.log('second request -------->', await productManager.getProducts())
