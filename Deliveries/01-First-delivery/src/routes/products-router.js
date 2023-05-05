@@ -1,14 +1,11 @@
-import express from 'express';
-import ProductManager from './manager/productManager.js';
+import { Router } from "express";
+const router = Router()
 
-const app = express();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+import ProductManager from "../manager/product-manager.js";
+import { productValidator } from "../middlewares/product-validator.js";
 const productManager = new ProductManager('./products.json');
 
-app.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const products = await productManager.getProducts();
         res.status(200).json(products);
@@ -18,10 +15,10 @@ app.get('/products', async (req, res) => {
     }
 });
 
-app.get('/products/:id', async (req, res) => {
+router.get('/:pid', async (req, res) => {
     try {
-        const { id } = req.params;
-        const product = await productManager.getProductById(Number(id));
+        const { pid } = req.params;
+        const product = await productManager.getProductById(Number(pid));
         if (product) {
             res.status(200).json({ message: 'Product found', product })
         } else {
@@ -33,7 +30,7 @@ app.get('/products/:id', async (req, res) => {
 });
 
 
-app.post('/products', async (req, res) => {
+router.post('/', productValidator, async (req, res) => {
     try {
         const product = req.body;
         const newProduct = await productManager.addProduct(product);
@@ -43,13 +40,13 @@ app.post('/products', async (req, res) => {
     }
 });
 
-app.put('/products/:id', async (req, res) => {
+router.put('/:pid', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { pid } = req.params;
         const field = req.body;
-        const productFile = await productManager.getProductById(Number(id));
+        const productFile = await productManager.getProductById(Number(pid));
         if (productFile) {
-            await productManager.updateProduct(Number(id), field);
+            await productManager.updateProduct(Number(pid), field);
             res.send(`product updated successfully!`);
         } else {
             res.status(404).send('product not found')
@@ -60,15 +57,15 @@ app.put('/products/:id', async (req, res) => {
     }
 });
 
-app.delete('/products/:id', async (req, res) => {
+router.delete('/:pid', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { pid } = req.params;
         const products = await productManager.getProducts();
         if (products.length > 0) {
-            await productManager.deleteProductById(Number(id));
-            res.send(`product id: ${id} deleted successfully`);
+            await productManager.deleteProductById(Number(pid));
+            res.send(`product id: ${pid} deleted successfully`);
         } else {
-            res.send(`product id: ${id} not found`);
+            res.send(`product id: ${pid} not found`);
         }
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -76,7 +73,7 @@ app.delete('/products/:id', async (req, res) => {
     }
 });
 
-app.delete('/products', async (req, res) => {
+router.delete('/', async (req, res) => {
     try {
         await productManager.deleteAllProducts();
         res.send('products deleted successfully')
@@ -86,8 +83,4 @@ app.delete('/products', async (req, res) => {
     }
 })
 
-const PORT = 8080;
-
-app.listen(PORT, () => {
-    console.log(`Server ok en puerto: ${PORT}`);
-});
+export default router;
