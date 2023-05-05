@@ -61,12 +61,13 @@ export default class CartManager {
         try {
             const cartsFile = await this.getCarts()
             const newCartsFile = cartsFile.filter((c) => c.id !== Number(cartId))
-            console.log(newCartsFile)
             const cartFinded = await this.getCartById(Number(cartId))
-            // const productFinded = await productManager.getProductById(productId)
-            // const { id } = productFinded
-            cartFinded.products.push({ id: Number(productId) })
-            // console.log(cartFinded)
+            const indexProd = cartFinded.products.findIndex(p => p.id === Number(productId))
+            if (cartFinded.products[indexProd] === undefined) {
+                cartFinded.products.push({ id: Number(productId), quantity: 1 })
+            } else if (cartFinded.products[indexProd].id === Number(productId)) {
+                cartFinded.products[indexProd].quantity = cartFinded.products[indexProd].quantity + 1
+            }
             newCartsFile.push(cartFinded)
             await fs.promises.writeFile(this.path, JSON.stringify(newCartsFile, null, 2))
         } catch (error) {

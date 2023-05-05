@@ -1,8 +1,11 @@
 import { Router } from "express";
 const router = Router()
 
-import CartManager from "../manager/cart-manager.js";
 
+import CartManager from "../manager/cart-manager.js";
+import ProductManager from "../manager/product-manager.js";
+
+const productManager = new ProductManager('./products.json');
 const cartManager = new CartManager('./cart.json');
 
 router.post('/', async (req, res) => {
@@ -34,13 +37,18 @@ router.post('/:cid/products/:pid', async (req, res) => {
         const { cid, pid } = req.params
         const cart = await cartManager.getCartById(Number(cid))
         if (cart) {
-            const cartWithProdAdded = cartManager.addProductsToCart(cid, pid)
-            res.status(200).json(cartWithProdAdded)
+            const product = await productManager.getProductById(Number(pid))
+            if (product) {
+                const cartWithProdAdded = cartManager.addProductsToCart(cid, pid)
+                res.status(200).json(cartWithProdAdded)
+            } else {
+                res.status(400).send('product not found')
+            }
         } else {
-            res.status(400).send('cart or prod not found')
+            res.status(400).send('cart not found')
         }
     } catch (error) {
-
+        console.log(error)
     }
 })
 
