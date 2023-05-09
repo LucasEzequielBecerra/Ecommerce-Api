@@ -3,7 +3,7 @@ const router = Router()
 
 import ProductManager from "../manager/product-manager.js";
 import { productValidator } from "../middlewares/product-validator.js";
-const productManager = new ProductManager('./products.json');
+const productManager = new ProductManager('./src/data/products.json');
 
 router.get('/', async (req, res) => {
     try {
