@@ -1,52 +1,8 @@
 [
   {
     "id": 1,
-    "title": "objeto1",
-    "description": "objeto1",
-    "code": "objeto1",
-    "price": "objeto1",
-    "status": "objeto1",
-    "stock": "objeto1",
-    "category": "objeto1"
-  },
-  {
-    "id": 2,
-    "title": "objeto2",
-    "description": "objeto2",
-    "code": "objeto2",
-    "price": "objeto2",
-    "status": "objeto2",
-    "stock": "objeto2",
-    "category": "objeto2"
-  },
-  {
-    "id": 3,
-    "title": "objeto3",
-    "description": "objeto3",
-    "code": "objeto3",
-    "price": "objeto3",
-    "status": "objeto3",
-    "stock": "objeto3",
-    "category": "objeto3"
-  },
-  {
-    "id": 4,
-    "title": "objeto4",
-    "description": "objeto4",
-    "code": "objeto4",
-    "price": "objeto4",
-    "status": "objeto4",
-    "stock": "objeto4",
-    "category": "objeto4"
-  },
-  {
-    "id": 5,
-    "title": "objeto5",
-    "description": "objeto5",
-    "code": "objeto5",
-    "price": "objeto5",
-    "status": "objeto5",
-    "stock": "objeto5",
-    "category": "objeto5"
+    "title": "Lucas",
+    "description": "El mas",
+    "price": "123"
   }
 ]

@@ -5,7 +5,7 @@ const router = Router()
 import CartManager from "../manager/cart-manager.js";
 import ProductManager from "../manager/product-manager.js";
 
-const productManager = new ProductManager('./products.json');
+const productManager = new ProductManager('.src/data/products.json');
 const cartManager = new CartManager('./src/data/cart.json');
 
 router.post('/', async (req, res) => {
