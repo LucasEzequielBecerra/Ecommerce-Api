@@ -41,6 +41,12 @@ socketServer.on('connection', async (socket) => {
         await productManager.addProduct(product)
         socketServer.emit('products', await productManager.getProducts())
     })
+
+    socket.on('remove products', async (id) => {
+        console.log(id)
+        await productManager.deleteProductById(id)
+        socketServer.emit('products', await productManager.getProducts())
+    })
 })
 
 
