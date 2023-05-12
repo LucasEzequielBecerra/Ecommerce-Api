@@ -17,7 +17,7 @@ socket.on('products', (data) => {
                 <p class='title-socket'>${product.title}</p>
                 <p class='description-socket'>${product.description}</p>
                 <p class='price-socket'>$${product.price}</p>
-                <button id='btn-remove${product.id}'>remove product</button>
+                <button onclick='removeProduct(${product.id})'>remove product</button>
                 </div>`
     }).join(' ')
     containerSocket.innerHTML = productsRenders
@@ -33,13 +33,6 @@ buttonSocket.addEventListener('click', (e) => {
     })
 })
 
-socket.on('products', (data) => {
-    data.map(product => {
-        const btnRemove = document.getElementById(`btn-remove${product.id}`)
-        console.log(btnRemove)
-
-        btnRemove.addEventListener('click', (e) => {
-            socket.emit('remove products', (product.id))
-        })
-    })
-})
+function removeProduct(id) {
+    socket.emit('remove products', (id))
+}

@@ -43,8 +43,8 @@ socketServer.on('connection', async (socket) => {
     })
 
     socket.on('remove products', async (id) => {
-        console.log(id)
         await productManager.deleteProductById(id)
+        socketServer.emit('remove products', id)
         socketServer.emit('products', await productManager.getProducts())
     })
 })
