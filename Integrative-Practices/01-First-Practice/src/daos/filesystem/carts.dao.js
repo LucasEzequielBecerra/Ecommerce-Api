@@ -3,7 +3,7 @@ import fs from 'fs';
 
 // const productManager = new ProductManager
 
-export default class CartManager {
+export default class CartDaoFS {
     constructor(path) {
         this.path = path;
     }

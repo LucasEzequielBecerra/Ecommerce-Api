@@ -6,8 +6,7 @@ const inputTilte = document.getElementById('input-title')
 const inputDescription = document.getElementById('input-description')
 const inputPrice = document.getElementById('input-price')
 const buttonSocket = document.getElementById('button-socket')
-// const buttonRemove = document.getElementById('btn-remove')
-// const listOfProducts = document.getElementById('list-of-products')
+
 
 socket.on('products', (data) => {
     // console.log(containerSocket)

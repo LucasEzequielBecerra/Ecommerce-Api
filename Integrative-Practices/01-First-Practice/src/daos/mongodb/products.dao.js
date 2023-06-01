@@ -1,7 +1,27 @@
 import { ProductsModel } from "./models/products.model.js"
+import { CartsModel } from "./models/carts.model.js"
 
 export default class ProductsDaoMongoDB {
 
+    async addProductsToCart(cartId, productId) {
+        try {
+            const cart = await CartsModel.findById(cartId)
+            cart.products.push(productId)
+            cart.save()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async getProductById(id) {
+        try {
+            const res = await ProductsModel.findById(id)
+            return res
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
     async getProducts() {
         try {
             const res = await ProductsModel.find({})
@@ -10,14 +30,7 @@ export default class ProductsDaoMongoDB {
             console.log(error)
         }
     }
-    async getProductById(id) {
-        try {
-            const res = await ProductsModel.findById(id)
-            return res
-        } catch (error) {
-            console.log(error)
-        }
-    }
+
     async addProducts(obj) {
         try {
             const res = await ProductsModel.create(obj)

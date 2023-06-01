@@ -11,35 +11,30 @@ export default class CartsDaoMongoDB {
         }
     }
 
-    async createCart() {
-        try {
-            const cartFile = {
-                products: []
-            }
-            const cart = await CartsModel.create(cartFile)
-            return cart
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     async getCartById(cartId) {
         try {
-            const cart = await CartsModel.findById(cartId)
+            const res = await CartsModel.findById(cartId)
+            return res
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async createCart(obj) {
+        try {
+            const cart = await CartsModel.create(obj)
             return cart
         } catch (error) {
             console.log(error)
         }
     }
 
-    async addProductsToCart(cartId, productId) {
+    async deleteCart(cartId) {
         try {
-            const cart = await CartsModel.findById(cartId)
-            cart.products.push(productId)
-            await cart.save()
-            return cart
+            const res = await CartsModel.findByIdAndDelete(cartId)
+            return res
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 }

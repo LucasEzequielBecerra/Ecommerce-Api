@@ -1,6 +1,18 @@
 import ProductsDaoMongoDB from "../daos/mongodb/products.dao.js"
 const productDaoMongo = new ProductsDaoMongoDB();
 
+export const addProductsToCart = async (cartId, productId) => {
+    try {
+        const exists = await productDaoMongo.getProductById(productId)
+        const newProduct = await productDaoMongo.addProductsToCart(cartId, productId)
+        if (!exists)
+            throw new Error('product not found')
+        else return newProduct
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const getAllService = async () => {
     try {
         const docs = await productDaoMongo.getProducts()
@@ -18,7 +30,7 @@ export const getByIdService = async (id) => {
         console.log(error)
     }
 }
-export const createService = async (obj) => {
+export const createProductService = async (obj) => {
     try {
         const newProd = await productDaoMongo.addProducts(obj)
         if (!newProd) throw new Error('validation Error');
