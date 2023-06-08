@@ -6,7 +6,8 @@ export default class ProductsDaoMongoDB {
     async addProductsToCart(cartId, productId) {
         try {
             const cart = await CartsModel.findById(cartId)
-            cart.products.push(productId)
+            const quantity = cart.products[0].quantity = 1
+            cart.products.push({ productId, quantity })
             cart.save()
         } catch (error) {
             console.log(error)
