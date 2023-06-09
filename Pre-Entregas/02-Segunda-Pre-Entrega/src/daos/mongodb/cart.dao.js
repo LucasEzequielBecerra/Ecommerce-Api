@@ -2,6 +2,15 @@ import { CartsModel } from "./models/carts.model.js"
 
 export default class CartsDaoMongoDB {
 
+    async createCart() {
+        try {
+            const cart = await CartsModel.create({})
+            return cart
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     async getCarts() {
         try {
             const carts = await CartsModel.find({})
@@ -15,15 +24,6 @@ export default class CartsDaoMongoDB {
         try {
             const res = await CartsModel.findById(cartId)
             return res
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async createCart(obj) {
-        try {
-            const cart = await CartsModel.create(obj)
-            return cart
         } catch (error) {
             console.log(error)
         }
