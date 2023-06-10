@@ -11,30 +11,82 @@ export default class CartsDaoMongoDB {
         }
     }
 
-    async getCarts() {
+    async addProductToCart(cid, pid, quantity = 1) {
         try {
-            const carts = await CartsModel.find({})
-            return carts
+            const cart = await CartsModel.findById(cid)
+            const prodIndex = cart.products.findIndex(product => product._id.toString() === pid.toString())
+            console.log(prodIndex)
+            if (prodIndex >= 0) {
+                if (quantity >= 1) {
+                    cart.products[prodIndex].quantity++
+                } else if (quantity <= 0) {
+                    throw new Error('no puedes agregar 0 productos')
+                } else {
+                    cart.products[prodIndex].quantity = quantity
+                }
+            } else {
+                cart.products.push({ _id: pid, quantity: 1 })
+                console.log(cart)
+            }
+            await cart.save()
+            return cart
         } catch (error) {
             console.log(error)
         }
     }
 
-    async getCartById(cartId) {
+    async deleteProductToCart(cid, pid) {
         try {
-            const res = await CartsModel.findById(cartId)
-            return res
+            const cart = await CartsModel.findById(cid)
+            const prodIndex = cart.products.findIndex(product => product._id.toString() === pid.toString())
+            console.log(prodIndex)
+            const newCart = cart.products.splice(prodIndex, 1)
+            await cart.save()
+            return cart
         } catch (error) {
             console.log(error)
         }
     }
 
-    async deleteCart(cartId) {
+    async deleteAllProductsToCart(cid) {
         try {
-            const res = await CartsModel.findByIdAndDelete(cartId)
-            return res
+            let cart = await CartsModel.findById(cid)
+            console.log(cart)
+            cart.products = []
+            console.log(cart)
+            await cart.save()
+            return cart
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
+
+    //     async getCarts() {
+    //         try {
+    //             const carts = await CartsModel.find({})
+    //             return carts
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+
+    //     async getCartById(cartId) {
+    //         try {
+    //             const res = await CartsModel.findById(cartId)
+    //             return res
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
+
+    //     async deleteCart(cartId) {
+    //         try {
+    //             const res = await CartsModel.findByIdAndDelete(cartId)
+    //             return res
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    // }
+
 }
