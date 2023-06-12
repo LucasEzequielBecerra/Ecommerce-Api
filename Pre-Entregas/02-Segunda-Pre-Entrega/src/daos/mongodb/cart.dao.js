@@ -15,7 +15,7 @@ export default class CartsDaoMongoDB {
         try {
             const cart = await CartsModel.findById(cid)
             const prodIndex = cart.products.findIndex(product => product._id.toString() === pid.toString())
-            console.log(prodIndex)
+            // console.log(prodIndex)
             if (prodIndex >= 0) {
                 if (quantity >= 1) {
                     cart.products[prodIndex].quantity++
@@ -25,8 +25,8 @@ export default class CartsDaoMongoDB {
                     cart.products[prodIndex].quantity = quantity
                 }
             } else {
-                cart.products.push({ _id: pid, quantity: 1 })
-                console.log(cart)
+                cart.products.push({ _id: pid, quantity: 1, })
+                // console.log(cart)
             }
             await cart.save()
             return cart
@@ -61,6 +61,15 @@ export default class CartsDaoMongoDB {
         }
     }
 
+    async getCartById(cartId) {
+        try {
+            const res = await CartsModel.findById(cartId)
+            return res.populate("products.product")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     //     async getCarts() {
     //         try {
     //             const carts = await CartsModel.find({})
@@ -70,14 +79,7 @@ export default class CartsDaoMongoDB {
     //         }
     //     }
 
-    //     async getCartById(cartId) {
-    //         try {
-    //             const res = await CartsModel.findById(cartId)
-    //             return res
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-    //     }
+
 
     //     async deleteCart(cartId) {
     //         try {

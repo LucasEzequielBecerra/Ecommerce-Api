@@ -15,10 +15,10 @@ export const getAllProductsController = async (req, res, next) => {
     try {
         const { page, limit } = req.query;
         const response = await service.getAllProductsService(page, limit)
-        console.log(response)
+        // console.log(response.docs)
         const next = response.hasNextPage ? `http://localhost:8080/api/products?page=${response.nextPage}` : null
         const prev = response.hasPrevPage ? `http://localhost:8080/api/products?page=${response.prevPage}` : null
-        res.json({
+        const productsFile = ({
             status: "success",
             payload: response.docs,
             totalPages: response.totalPages,
@@ -30,6 +30,8 @@ export const getAllProductsController = async (req, res, next) => {
             prevLink: prev,
             nextLink: next
         })
+        console.log(productsFile)
+        res.render('products', { productsFile })
     } catch (error) {
         next(error)
     }

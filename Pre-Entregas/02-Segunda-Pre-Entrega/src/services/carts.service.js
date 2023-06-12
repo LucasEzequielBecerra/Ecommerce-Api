@@ -6,7 +6,7 @@ export const createCartService = async () => {
         const newCart = await cartDaoMongo.createCart();
         console.log('created new cart!!')
         if (!newCart) throw new Error('Cart already exists')
-        else return { message: 'cart created successfully' }
+        else return newCart
     } catch (error) {
         console.log(error)
     }
@@ -41,15 +41,15 @@ export const deleteAllProductsToCartService = async (cid) => {
     }
 }
 
-// export const getCartByIdService = async (cartId) => {
-//     try {
-//         const doc = await cartDaoMongo.getCartById(cartId)
-//         if (!doc) throw new Error('Cart not found')
-//         return doc
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+export const getCartByIdService = async (cartId) => {
+    try {
+        const doc = await cartDaoMongo.getCartById(cartId)
+        if (!doc) throw new Error('Cart not found')
+        return doc
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 // export const getAllCarts = async () => {
 //     try {

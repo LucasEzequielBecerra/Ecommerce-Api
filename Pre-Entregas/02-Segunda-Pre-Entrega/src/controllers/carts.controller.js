@@ -43,7 +43,18 @@ export const deleteAllProductsToCartController = async (req, res, next) => {
         const newCart = await service.deleteAllProductsToCartService(cid)
         res.json(newCart)
     } catch (error) {
-        console.log(error)
+        next(error)
+    }
+}
+
+export const getCartByIdController = async (req, res, next) => {
+    try {
+        const { cid } = req.params
+        const doc = await service.getCartByIdService(cid)
+        // console.log(doc)
+        res.render('carts', doc);
+    } catch (error) {
+        next(error);
     }
 }
 
@@ -56,15 +67,7 @@ export const deleteAllProductsToCartController = async (req, res, next) => {
 //     }
 // }
 
-// export const getCartByIdController = async (req, res, next) => {
-//     try {
-//         const { cartid } = req.params
-//         const doc = await service.getCartByIdService(cartid)
-//         res.json(doc);
-//     } catch (error) {
-//         next(error);
-//     }
-// }
+
 
 // export const deleteController = async (req, res, next) => {
 //     try {
