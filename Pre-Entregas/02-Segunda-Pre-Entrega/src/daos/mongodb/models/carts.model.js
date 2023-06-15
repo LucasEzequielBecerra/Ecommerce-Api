@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 
 const cartsSchema = new mongoose.Schema({
-    products: [{ productId: { type: mongoose.Schema.Types.ObjectId, ref: 'products' }, quantity: { type: Number, default: 1 } }]
+    products: [
+        { type: mongoose.Schema.Types.Mixed, required: true, ref: 'products', quantity: { type: Number, default: 1 } },
+    ],
 })
 
 cartsSchema.pre('find', function () {
-    this.populate('products.productId')
+    this.populate('products')
 })
 
 export const CartsModel = mongoose.model('carts', cartsSchema)

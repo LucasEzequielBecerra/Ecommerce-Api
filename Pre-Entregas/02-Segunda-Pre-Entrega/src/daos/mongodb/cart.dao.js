@@ -11,25 +11,25 @@ export default class CartsDaoMongoDB {
         }
     }
 
-    async addProductToCart(cid, pid, quantity = 1) {
+    async addProductToCart(cid, pid) {
         try {
-            const cart = await CartsModel.findById(cid)
-            const prodIndex = cart.products.findIndex(product => product._id.toString() === pid.toString())
-            // console.log(prodIndex)
-            if (prodIndex >= 0) {
-                if (quantity >= 1) {
-                    cart.products[prodIndex].quantity++
-                } else if (quantity <= 0) {
-                    throw new Error('no puedes agregar 0 productos')
-                } else {
-                    cart.products[prodIndex].quantity = quantity
-                }
+            const cartFind = await CartsModel.findById(cid)
+            if (!cartFind) throw new Error("Cart not found")
+            const existingProduct = await cartFind.products.find(productIt => productIt._id === pid);
+            if (existingProduct) {
+                const updatedQuantity = existingProduct.quantity + 1
+                await CartsModel.updateOne(
+                    { _id: cid, 'products._id': pid },
+                    { $set: { 'products.$.quantity': updatedQuantity } }
+                );
             } else {
-                cart.products.push({ _id: pid, quantity: 1, })
-                // console.log(cart)
-            }
-            await cart.save()
-            return cart
+                await CartsModel.findOneAndUpdate(
+                    { _id: cid },
+                    { $push: { products: { _id: pid, quantity: 1 } } },
+                );
+            };
+            const cartUpdate = await CartsModel.findById(cid).populate('products._id');
+            return cartUpdate
         } catch (error) {
             console.log(error)
         }
@@ -64,7 +64,7 @@ export default class CartsDaoMongoDB {
     async getCartById(cartId) {
         try {
             const res = await CartsModel.findById(cartId)
-            return res.populate("products.product")
+            return res.populate('products')
         } catch (error) {
             console.log(error)
         }

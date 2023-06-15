@@ -6,6 +6,11 @@ import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
 import productsRouter from './routes/products.router.js'
 import cartsRouter from './routes/carts.router.js'
+import mongoStore from 'connect-mongo'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import userRouter from './routes/user.router.js'
+import './db/database.js'
 
 const app = express();
 const PORT = 8080;
@@ -25,8 +30,24 @@ app.engine('handlebars', handlebars.engine({
 app.set('view engine', 'handlebars')
 app.set('views', __dirname + '/views')
 
+app.use(
+    session({
+        secret: 'sessionKey',
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            maxAge: 10000
+        },
+        store: new mongoStore({
+            mongoUrl: 'mongodb+srv://Becerra:Lucasbecerra.1@cluster0.2eff3zo.mongodb.net/Backend?retryWrites=true&w=majority',
+            ttl: 10
+        })
+    })
+)
+
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
+app.use('/api/users', userRouter);
 
 
 const httpServer = app.listen(PORT, () => {

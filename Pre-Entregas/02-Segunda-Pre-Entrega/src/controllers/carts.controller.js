@@ -52,7 +52,7 @@ export const getCartByIdController = async (req, res, next) => {
         const { cid } = req.params
         const doc = await service.getCartByIdService(cid)
         // console.log(doc)
-        res.render('carts', doc);
+        res.json(doc);
     } catch (error) {
         next(error);
     }
