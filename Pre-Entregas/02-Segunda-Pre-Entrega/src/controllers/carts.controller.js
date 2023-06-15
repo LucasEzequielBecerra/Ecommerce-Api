@@ -13,14 +13,10 @@ export const createCartController = async (req, res, next) => {
 export const addProductToCartController = async (req, res, next) => {
     try {
         const { cid } = req.params
-        // console.log(cid)
         const { pid } = req.params
-        // console.log(pid)
         const { quantity } = req.body
         console.log(quantity)
         const newProduct = await service.addProductToCartService(cid, pid, quantity)
-        // if (!newProduct) throw new Error('validation error')
-        // console.log('ok en controller', newProduct)
         res.json(newProduct)
     } catch (error) {
         next(error)
@@ -31,6 +27,7 @@ export const deleteProductToCartController = async (req, res, next) => {
     try {
         const { cid, pid } = req.params
         const newCart = await service.deleteProductToCartService(cid, pid)
+        console.log(newCart)
         res.json(newCart)
     } catch (error) {
         next(error)
@@ -51,8 +48,8 @@ export const getCartByIdController = async (req, res, next) => {
     try {
         const { cid } = req.params
         const doc = await service.getCartByIdService(cid)
-        // console.log(doc)
-        res.json(doc);
+        // console.log(docrs)
+        res.render('carts', { doc });
     } catch (error) {
         next(error);
     }

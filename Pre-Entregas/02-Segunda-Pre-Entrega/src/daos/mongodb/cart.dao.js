@@ -11,24 +11,24 @@ export default class CartsDaoMongoDB {
         }
     }
 
-    async addProductToCart(cid, pid) {
+    async addProductToCart(cid, pid, quantity) {
         try {
             const cartFind = await CartsModel.findById(cid)
             if (!cartFind) throw new Error("Cart not found")
-            const existingProduct = await cartFind.products.find(productIt => productIt._id === pid);
+            const existingProduct = cartFind.products.find(productIt => productIt._id === pid);
             if (existingProduct) {
                 const updatedQuantity = existingProduct.quantity + 1
                 await CartsModel.updateOne(
                     { _id: cid, 'products._id': pid },
-                    { $set: { 'products.$.quantity': updatedQuantity } }
+                    { $set: { 'products.$.quantity': quantity ? quantity : updatedQuantity } }
                 );
             } else {
                 await CartsModel.findOneAndUpdate(
                     { _id: cid },
-                    { $push: { products: { _id: pid, quantity: 1 } } },
+                    { $push: { products: { _id: pid, quantity: quantity ? quantity : 1 } } },
                 );
             };
-            const cartUpdate = await CartsModel.findById(cid).populate('products._id');
+            const cartUpdate = await CartsModel.findById(cid)
             return cartUpdate
         } catch (error) {
             console.log(error)
@@ -37,11 +37,11 @@ export default class CartsDaoMongoDB {
 
     async deleteProductToCart(cid, pid) {
         try {
-            const cart = await CartsModel.findById(cid)
+            let cart = await CartsModel.findById(cid)
             const prodIndex = cart.products.findIndex(product => product._id.toString() === pid.toString())
-            console.log(prodIndex)
-            const newCart = cart.products.splice(prodIndex, 1)
-            await cart.save()
+            // console.log(prodIndex)
+            // console.log(newCart)
+            console.log('--------------------->', cart.products.splice(0, 1))
             return cart
         } catch (error) {
             console.log(error)
@@ -51,9 +51,7 @@ export default class CartsDaoMongoDB {
     async deleteAllProductsToCart(cid) {
         try {
             let cart = await CartsModel.findById(cid)
-            console.log(cart)
             cart.products = []
-            console.log(cart)
             await cart.save()
             return cart
         } catch (error) {
@@ -63,8 +61,8 @@ export default class CartsDaoMongoDB {
 
     async getCartById(cartId) {
         try {
-            const res = await CartsModel.findById(cartId)
-            return res.populate('products')
+            const res = await CartsModel.findOne({ _id: cartId })
+            return res.populate('products._id')
         } catch (error) {
             console.log(error)
         }

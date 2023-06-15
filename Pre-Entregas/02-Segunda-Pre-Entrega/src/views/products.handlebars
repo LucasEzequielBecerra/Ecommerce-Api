@@ -2,7 +2,7 @@
     <p>hola</p>
 </div>
 {{#if productsFile}}
-<div class="container-responses d-flex align-items-center">
+<div class="container-responses d-flex align-items-center row g-4">
     {{#each productsFile.payload}}
     <div class="card col-4" style="width: 18rem;">
         <div class="card-body">
@@ -10,7 +10,7 @@
             <p class="card-text">{{description}}</p>
             <p class="card-text">stock: {{stock}}</p>
             <h6 class="card-text">${{price}}</h6>
-            <button class="btn btn-lg btn-outline-primary" onclick="addProduct('{{_id}}')">Comprar</button>
+            <button class="btn btn-lg btn-outline-primary" onClick="addProduct('{{_id}}')">Comprar</button>
         </div>
     </div>
     {{/each}}

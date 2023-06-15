@@ -5,13 +5,14 @@
 <div class="container-fluid d-flex flex-column align-items-center">
     <div class="card text-center" style="width: 18rem;">
         <div class="card-body">
-            <h5 class="card-title">'{{_id}}'</h5>
-            <p class="card-text"></p>
-            <h6 class="card-text"></h6>
+            <h5 class="card-title">{{_id.[0].name}}</h5>
+            <p class="card-text">{{_id.[0].description}}</p>
+            <h6 class="card-text">{{_id.[0].price}}</h6>
             <div class="d-flex justify-content-center align-items-center">
-                <button type="button" class='btn btn-outline-dark mx-2' onclick="deleteProduct('{{_id}}')">-</button>
+                <button type="button" class='btn btn-outline-dark mx-2'
+                    onClick="deleteAProduct('{{_id.[0]._id}}', '{{quantity}}')">-</button>
                 <h3 class='mb-2'>Cantidad {{quantity}}</h3>
-                <button class='btn btn-outline-dark mx-2' onclick="addProduct('{{_id}}')">+</button>
+                <button class='btn btn-outline-dark mx-2' onClick="addAProduct('{{_id.[0]._id}}')">+</button>
             </div>
         </div>
     </div>

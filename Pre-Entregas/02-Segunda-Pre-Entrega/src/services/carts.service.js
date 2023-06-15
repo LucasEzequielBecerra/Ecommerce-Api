@@ -15,8 +15,6 @@ export const createCartService = async () => {
 export const addProductToCartService = async (cid, pid, quantity) => {
     try {
         const newProduct = await cartDaoMongo.addProductToCart(cid, pid, quantity);
-        // if (!newProduct) throw new Error('product or cart not found')
-        // console.log('ok en service', newProduct)
         return newProduct
     } catch (error) {
         console.log(error)

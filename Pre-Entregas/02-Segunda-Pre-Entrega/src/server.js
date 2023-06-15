@@ -64,7 +64,6 @@ socketServer.on('connection', (socket) => {
         socket.on('userCartId', (userCartIdResult) => {
             userCartId = userCartIdResult
         })
-        console.log('conectado')
     } else {
         socket.emit('userCartAlreadyCreated', userCartId)
     }
