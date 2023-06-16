@@ -10,6 +10,7 @@ import mongoStore from 'connect-mongo'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import userRouter from './routes/user.router.js'
+import viewsRouter from './routes/views.router.js'
 import './db/database.js'
 
 const app = express();
@@ -48,6 +49,7 @@ app.use(
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/users', userRouter);
+app.use('/api/views', viewsRouter);
 
 
 const httpServer = app.listen(PORT, () => {

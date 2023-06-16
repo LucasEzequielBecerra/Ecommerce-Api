@@ -6,7 +6,7 @@ const router = new Router();
 router.post('/register', async (req, res) => {
     try {
         const newUser = await userDao.createUser(req.body)
-        if (newUser) res.json(newUser);
+        if (newUser) res.redirect('/api/views');
         else res.json({ error: " register failed " })
     } catch (error) {
         console.log(error)
@@ -21,7 +21,7 @@ router.post('/login', async (req, res) => {
         if (user) {
             req.session.email = email
             req.session.password = password
-            res.json(user)
+            res.redirect('/api/products')
         } else {
             res.json({ error: " login failed " })
         }

@@ -38,10 +38,10 @@ export default class CartsDaoMongoDB {
     async deleteProductToCart(cid, pid) {
         try {
             let cart = await CartsModel.findById(cid)
-            const prodIndex = cart.products.findIndex(product => product._id.toString() === pid.toString())
-            // console.log(prodIndex)
-            // console.log(newCart)
-            console.log('--------------------->', cart.products.splice(0, 1))
+            const newProducts = cart.products.filter((prod) => prod._id.toString() !== pid.toString())
+            cart.products = newProducts
+            cart.save()
+            console.log(cart)
             return cart
         } catch (error) {
             console.log(error)

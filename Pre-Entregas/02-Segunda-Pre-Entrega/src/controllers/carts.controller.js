@@ -15,7 +15,7 @@ export const addProductToCartController = async (req, res, next) => {
         const { cid } = req.params
         const { pid } = req.params
         const { quantity } = req.body
-        console.log(quantity)
+        // console.log(quantity)
         const newProduct = await service.addProductToCartService(cid, pid, quantity)
         res.json(newProduct)
     } catch (error) {
@@ -27,7 +27,7 @@ export const deleteProductToCartController = async (req, res, next) => {
     try {
         const { cid, pid } = req.params
         const newCart = await service.deleteProductToCartService(cid, pid)
-        console.log(newCart)
+        // console.log(newCart)
         res.json(newCart)
     } catch (error) {
         next(error)
