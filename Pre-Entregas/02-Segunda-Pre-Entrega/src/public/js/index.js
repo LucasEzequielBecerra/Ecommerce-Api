@@ -56,3 +56,4 @@ async function addProduct(prodId) {
         console.log(error)
     }
 }
+

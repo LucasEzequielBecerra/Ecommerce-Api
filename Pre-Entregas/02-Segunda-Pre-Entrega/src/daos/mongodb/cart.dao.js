@@ -41,7 +41,6 @@ export default class CartsDaoMongoDB {
             const newProducts = cart.products.filter((prod) => prod._id.toString() !== pid.toString())
             cart.products = newProducts
             cart.save()
-            console.log(cart)
             return cart
         } catch (error) {
             console.log(error)

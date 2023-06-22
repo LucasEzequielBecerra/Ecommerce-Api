@@ -1,34 +1,16 @@
 import { Router } from 'express'
 import UserDao from "../daos/mongodb/user.dao.js";
+import { registerResponse, loginResponse, githubResponse, githubData } from '../controllers/users.controller.js'
 const userDao = new UserDao();
 const router = new Router();
+import passport from 'passport';
 
-router.post('/register', async (req, res) => {
-    try {
-        const newUser = await userDao.createUser(req.body)
-        if (newUser) res.redirect('/api/views');
-        else res.json({ error: " register failed " })
-    } catch (error) {
-        console.log(error)
-    }
-})
+router.post('/register', passport.authenticate('register'), registerResponse);
 
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body
-        const user = await userDao.loginUser(req.body)
-        console.log(user)
-        if (user) {
-            req.session.email = email
-            req.session.password = password
-            res.redirect('/api/products')
-        } else {
-            res.json({ error: " login failed " })
-        }
-    } catch (error) {
+router.post('/login', passport.authenticate('login'), loginResponse);
 
-    }
-})
+router.get('/register-github', passport.authenticate('github', { scope: ['user:email'] }), githubData)
+router.get('/profile-github', passport.authenticate('github', { scope: ['user:email'] }), githubResponse)
 export default router;
 
 

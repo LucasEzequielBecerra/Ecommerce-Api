@@ -30,7 +30,6 @@ export const getAllProductsController = async (req, res, next) => {
             prevLink: prev,
             nextLink: next
         })
-        console.log(productsFile)
         res.render('products', { productsFile })
     } catch (error) {
         next(error)
