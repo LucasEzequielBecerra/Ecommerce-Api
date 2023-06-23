@@ -11,38 +11,29 @@ export const registerResponse = (req, res, next) => {
 
 export const loginResponse = async (req, res, next) => {
     try {
-        // const user = await userDao.getUserById(req.session.passport.user);
-        // const { first_name, last_name, email, age, role } = user;
-        res.redirect('/api/products')
+        const user = await userDao.getUserById(req.session.passport.user);
+        res.render('profile', { user })
+        // .redirect('/api/products')
     } catch (error) {
         next(error);
     }
 }
+
 
 export const githubResponse = async (req, res, next) => {
     try {
-        // const { first_name, last_name, email, role, isGithubUser } = req.user;
-        res.redirect('/api/products')
+        const user = await userDao.getUserById(req.user._id)
+        res.render('profile', { user })
     } catch (error) {
         next(error);
     }
 }
 
-export const githubData = async (req, res, next) => {
-    try {
-        const { first_name, last_name, email, role, isGithubUser } = req.user;
-        res.json({
-            msg: 'Register/Login Github OK',
-            session: req.session,
-            userData: {
-                first_name,
-                last_name,
-                email,
-                role,
-                isGithub
-            }
-        })
-    } catch (error) {
-        next(error)
-    }
+export const logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (!err) res.redirect('/');
+        else res.send({ status: 'Logout ERROR', body: err });
+    });
 }
+
+

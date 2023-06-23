@@ -43,3 +43,9 @@ passport.deserializeUser(async (id, done) => {
     const user = await userDao.getUserById(id);
     return done(null, user);
 });
+
+export const frontResponse = {
+    failureRedirect: '/',
+    successRedirect: '/api/products',
+    passReqToCallback: true,
+}

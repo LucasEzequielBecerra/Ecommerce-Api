@@ -22,9 +22,7 @@ export default class UserDao {
         try {
             const { email, password } = user;
             const userExist = await userModel.findOne({ email });
-            console.log(password)
             const userIsValidPassword = utils.isValidPassword(userExist, password)
-            console.log(userIsValidPassword)
             if (userIsValidPassword) {
                 return userExist
             } else {

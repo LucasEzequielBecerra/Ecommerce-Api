@@ -57,3 +57,6 @@ async function addProduct(prodId) {
     }
 }
 
+async function welcome() {
+    const response = await fetch('')
+}
