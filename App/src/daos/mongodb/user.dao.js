@@ -1,5 +1,5 @@
 import { userModel } from "./models/user.model.js";
-import * as utils from '../../path.js'
+import * as utils from '../../utils.js'
 
 export default class UserDao {
     async createUser(user) {

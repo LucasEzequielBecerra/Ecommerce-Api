@@ -25,7 +25,9 @@ const register = async (req, email, password, done) => {
 const login = async (req, email, password, done) => {
     const user = { email, password };
     const userLogin = await userDao.loginUser(user);
+
     if (!userLogin) return done(null, false);
+    console.log(userLogin)
     return done(null, userLogin);
 };
 

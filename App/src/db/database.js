@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import config from "../../config.js";
 
-const connectionString = 'mongodb+srv://Becerra:Lucasbecerra.1@cluster0.2eff3zo.mongodb.net/Backend?retryWrites=true&w=majority'
+const connectionString = config.MONGODB_URL_STRING_CONNECTION
 
 try {
     await mongoose.connect(connectionString)
