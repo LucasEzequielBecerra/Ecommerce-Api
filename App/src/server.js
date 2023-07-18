@@ -44,7 +44,7 @@ app.use(
         },
         store: new mongoStore({
             mongoUrl: config.MONGODB_URL_STRING_CONNECTION,
-            ttl: 60
+            ttl: 10
         })
     })
 )

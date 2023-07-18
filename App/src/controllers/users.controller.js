@@ -3,7 +3,7 @@ const userDao = new UserDao();
 
 export const registerResponse = (req, res, next) => {
     try {
-        res.redirect('/')
+        res.redirect('/api')
     } catch (error) {
         next(error);
     }
@@ -11,9 +11,9 @@ export const registerResponse = (req, res, next) => {
 
 export const loginResponse = async (req, res, next) => {
     try {
-        const user = await userDao.getUserById(req.session.passport.user);
-        res.render('profile', { user })
-        // .redirect('/api/products')
+        const user = await userDao.getById(req.session.passport.user);
+        console.log('lol------------------->', user)
+        res.json(user)
     } catch (error) {
         next(error);
     }
