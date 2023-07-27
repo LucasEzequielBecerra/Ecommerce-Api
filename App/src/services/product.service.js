@@ -1,5 +1,5 @@
-import ProductsDaoMongoDB from "../daos/mongodb/products.dao.js"
-const productDaoMongo = new ProductsDaoMongoDB();
+import ProductRepository from "../persistence/daos/repository/product.repository.js";
+const productDaoMongo = new ProductRepository()
 
 export const addProductService = async (obj) => {
     try {
@@ -13,26 +13,12 @@ export const addProductService = async (obj) => {
 
 export const getAllProductsService = async (page, limit) => {
     try {
-        const docs = await productDaoMongo.getAllProducts(page, limit)
+        const docs = await productDaoMongo.getAllProds(page, limit)
         return docs
     } catch (error) {
         console.log(error)
     }
 }
-
-
-// export const addProductsToCart = async (cartId, productId) => {
-//     try {
-//         const exists = await productDaoMongo.getProductById(productId)
-//         const newProduct = await productDaoMongo.addProductsToCart(cartId, productId)
-//         if (!exists)
-//             throw new Error('product not found')
-//         else return newProduct
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-
 
 // export const getByIdService = async (id) => {
 //     try {

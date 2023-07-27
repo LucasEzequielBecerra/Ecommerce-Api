@@ -1,10 +1,9 @@
-import CartsDaoMongoDB from "../daos/mongodb/cart.dao.js";
-const cartDaoMongo = new CartsDaoMongoDB()
+import CartRepositoy from "../persistence/daos/repository/cart.repository.js";
+const cartDaoMongo = new CartRepositoy()
 
 export const createCartService = async () => {
     try {
-        const newCart = await cartDaoMongo.createCart();
-        console.log('created new cart!!')
+        const newCart = await cartDaoMongo.createCart()
         if (!newCart) throw new Error('Cart already exists')
         else return newCart
     } catch (error) {
@@ -14,8 +13,8 @@ export const createCartService = async () => {
 
 export const addProductToCartService = async (cid, pid, quantity) => {
     try {
-        const newProduct = await cartDaoMongo.addProductToCart(cid, pid, quantity);
-        return newProduct
+        const newCart = await cartDaoMongo.addProductToCart(cid, pid, quantity);
+        return newCart
     } catch (error) {
         console.log(error)
     }
@@ -49,21 +48,21 @@ export const getCartByIdService = async (cartId) => {
     }
 }
 
-// export const getAllCarts = async () => {
-//     try {
-//         const docs = await cartDaoMongo.getCarts()
-//         if (!docs) throw new Error('carts not found')
-//         else return docs
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+export const getAllCarts = async () => {
+    try {
+        const docs = await cartDaoMongo.getCarts()
+        if (!docs) throw new Error('carts not found')
+        else return docs
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-// export const deleteCartService = async (id) => {
-//     try {
-//         const cartDeleted = await cartDaoMongo.deleteCart(id)
-//         return cartDeleted
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
+export const deleteCartService = async (id) => {
+    try {
+        const cartDeleted = await cartDaoMongo.deleteCart(id)
+        return cartDeleted
+    } catch (error) {
+        console.log(error);
+    }
+}

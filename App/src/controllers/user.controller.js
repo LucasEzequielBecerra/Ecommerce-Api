@@ -1,9 +1,8 @@
-import UserDao from "../daos/mongodb/user.dao.js";
-const userDao = new UserDao();
+import * as services from '../services/user.service.js'
 
 export const registerResponse = (req, res, next) => {
     try {
-        res.redirect('/api')
+        res.json({ message: 'user registered' })
     } catch (error) {
         next(error);
     }
@@ -11,8 +10,7 @@ export const registerResponse = (req, res, next) => {
 
 export const loginResponse = async (req, res, next) => {
     try {
-        const user = await userDao.getById(req.session.passport.user);
-        console.log('lol------------------->', user)
+        const user = await services.getUserByIdService(req.session.passport.user);
         res.json(user)
     } catch (error) {
         next(error);
@@ -22,8 +20,8 @@ export const loginResponse = async (req, res, next) => {
 
 export const githubResponse = async (req, res, next) => {
     try {
-        const user = await userDao.getUserById(req.user._id)
-        res.render('profile', { user })
+        const user = await services.getUserByIdService(req.user._id)
+        res.json({ user })
     } catch (error) {
         next(error);
     }
@@ -31,7 +29,7 @@ export const githubResponse = async (req, res, next) => {
 
 export const logout = (req, res) => {
     req.session.destroy((err) => {
-        if (!err) res.redirect('/');
+        if (!err) res.json({ message: 'sesion:logout' });
         else res.send({ status: 'Logout ERROR', body: err });
     });
 }

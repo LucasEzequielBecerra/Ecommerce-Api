@@ -1,7 +1,8 @@
-import { userModel } from "./models/user.model.js";
-import * as utils from '../../utils.js'
+import * as utils from '../../../../utils.js'
+import { userModel } from '../models/user.model.js';
 
-export default class UserDao {
+export default class UserManagerMongo {
+
     async createUser(user) {
         try {
             const { email, password } = user;
@@ -37,6 +38,7 @@ export default class UserDao {
     async getUserByEmail(email) {
         try {
             const user = await userModel.findOne({ email })
+            // console.log('mng', user)
             if (user) return user
             else return false
         } catch (error) {
@@ -47,9 +49,8 @@ export default class UserDao {
     async getUserById(id) {
         try {
             const userExist = await userModel.findById(id)
-            if (userExist) {
-                return userExist
-            } return false
+            if (userExist) return userExist
+            else return false
         } catch (error) {
             console.log(error)
         }

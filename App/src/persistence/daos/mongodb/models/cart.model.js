@@ -10,4 +10,4 @@ const cartsSchema = new mongoose.Schema({
 //     this.populate('products')
 // })
 
-export const CartsModel = mongoose.model('carts', cartsSchema)
+export const CartModel = mongoose.model('carts', cartsSchema)

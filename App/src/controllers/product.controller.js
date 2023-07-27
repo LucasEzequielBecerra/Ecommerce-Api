@@ -1,4 +1,4 @@
-import * as service from '../services/products.services.js'
+import * as service from '../services/product.service.js'
 
 export const addProductController = async (req, res, next) => {
     try {
@@ -30,7 +30,7 @@ export const getAllProductsController = async (req, res, next) => {
             prevLink: prev,
             nextLink: next
         })
-        res.render('products', { productsFile })
+        res.json({ productsFile })
     } catch (error) {
         next(error)
     }

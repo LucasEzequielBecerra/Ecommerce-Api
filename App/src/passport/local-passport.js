@@ -1,5 +1,5 @@
-import UserDao from '../daos/mongodb/user.dao.js';
-const userDao = new UserDao();
+import UserRepository from "../persistence/daos/repository/user.repository.js";
+const userDao = new UserRepository();
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 
