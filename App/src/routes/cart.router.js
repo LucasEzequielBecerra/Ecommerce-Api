@@ -1,12 +1,12 @@
 import { Router } from "express";
 import * as controller from '../controllers/cart.controller.js'
-import { validateLogIn } from "../middlewares/validateLogin.js";
+import { isUser } from "../middlewares/isUser.js";
 const router = new Router();
 
-router.get('/:cid', validateLogIn, controller.getCartByIdController)
+router.get('/:cid', controller.getCartByIdController)
 router.post('/', controller.createCartController)
-router.put('/:cid/products/:pid', controller.addProductToCartController)
-router.delete('/:cid/products/:pid', controller.deleteProductToCartController)
-router.delete('/:cid', controller.deleteAllProductsToCartController)
+router.put('/:cid/products/:pid', isUser, controller.addProductToCartController)
+router.delete('/:cid/products/:pid', isUser, controller.deleteProductToCartController)
+router.delete('/:cid', isUser, controller.deleteAllProductsToCartController)
 
 export default router;

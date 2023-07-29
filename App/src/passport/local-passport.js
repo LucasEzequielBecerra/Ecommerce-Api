@@ -18,7 +18,7 @@ const register = async (req, email, password, done) => {
         return done(null, newUser);
 
     } catch (error) {
-        console.log(error);
+        console.log('---->', error);
     }
 };
 

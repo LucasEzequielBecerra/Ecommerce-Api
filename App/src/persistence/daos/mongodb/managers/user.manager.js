@@ -8,9 +8,11 @@ export default class UserManagerMongo {
             const { email, password } = user;
             const existUser = await userModel.find({ email });
             if (existUser.length === 0) {
-                const newUser = await userModel.create({ ...user, password: utils.createHash(password) });
+                console.log('nashe 1')
+                const newUser = await userModel.create({ ...user, password: utils.createHash(password), role: email === 'lucas@gmail.com' ? 'admin' : 'user' });
                 return newUser
             } else {
+                console.log('nashe')
                 return null;
             }
         } catch (error) {
@@ -23,7 +25,7 @@ export default class UserManagerMongo {
         try {
             const { email, password } = user;
             const userExist = await userModel.findOne({ email });
-            const userIsValidPassword = utils.isValidPassword(userExist, password)
+            const userIsValidPassword = userExist && utils.isValidPassword(userExist, password)
             if (userIsValidPassword) {
                 return userExist
             } else {

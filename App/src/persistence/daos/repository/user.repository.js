@@ -16,8 +16,8 @@ export default class UserRepository {
     async getUserByEmail(email) {
         try {
             const user = await userManager.getUserByEmail(email)
-            const userDTO = new UserResponseDTO(user)
-            return userDTO
+            // const userDTO = new UserResponseDTO(user)
+            return user
         } catch (error) {
             console.log(error)
         }
@@ -35,9 +35,8 @@ export default class UserRepository {
 
     async createUser(user) {
         try {
-            const userExist = await userManager.createUser(user)
-            const userDTO = new UserResponseDTO(userExist)
-            return userDTO
+            const newUser = await userManager.createUser(user)
+            return newUser
         } catch (error) {
             console.log(error)
             throw new Error(error)

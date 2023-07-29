@@ -61,7 +61,7 @@ export default class CartManagerMongo {
     async getCartById(cartId) {
         try {
             const res = await CartModel.findOne({ _id: cartId })
-            return res.populate('products._id')
+            return res
         } catch (error) {
             console.log(error)
         }

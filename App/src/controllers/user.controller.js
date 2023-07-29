@@ -11,7 +11,7 @@ export const registerResponse = (req, res, next) => {
 export const loginResponse = async (req, res, next) => {
     try {
         const user = await services.getUserByIdService(req.session.passport.user);
-        res.json(user)
+        res.json({ message: `welcome ${user.name}`, userData: user })
     } catch (error) {
         next(error);
     }
