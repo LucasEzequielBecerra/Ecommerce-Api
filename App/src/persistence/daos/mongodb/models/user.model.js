@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const usersSchema = new mongoose.Schema({
     first_name: {
@@ -31,7 +31,8 @@ const usersSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
         required: true
-    }
+    },
+    cartId: { type: Schema.Types.ObjectId, ref: 'carts', required: true }
 })
 
 export const userModel = mongoose.model('Users', usersSchema)

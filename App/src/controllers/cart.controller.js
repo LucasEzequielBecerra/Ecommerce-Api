@@ -14,8 +14,8 @@ export const addProductToCartController = async (req, res, next) => {
     try {
         const { cid } = req.params
         const { pid } = req.params
-        const { quantity } = req.body
-        const newCart = await service.addProductToCartService(cid, pid, quantity)
+        const { quantity } = req.query
+        const newCart = await service.addProductToCartService(cid, pid, Number(quantity))
         res.json({ newCart })
     } catch (error) {
         next(error)
@@ -46,6 +46,16 @@ export const getCartByIdController = async (req, res, next) => {
     try {
         const { cid } = req.params
         const doc = await service.getCartByIdService(cid)
+        res.json({ doc });
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const purchaseProductsController = async (req, res, next) => {
+    try {
+        const { cid } = req.params
+        const doc = await service.purchaseProductsService(cid)
         res.json({ doc });
     } catch (error) {
         next(error);

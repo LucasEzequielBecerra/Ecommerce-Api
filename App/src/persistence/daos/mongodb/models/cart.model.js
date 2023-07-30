@@ -2,8 +2,14 @@ import mongoose from 'mongoose';
 
 const cartsSchema = new mongoose.Schema({
     products: [
-        { type: mongoose.Schema.Types.Mixed, required: true, ref: 'products', default: {}, quantity: { type: Number, default: 1 } }
+        {
+            _id: false,
+            pid: { type: mongoose.Schema.Types.Mixed, required: true, ref: 'products' },
+            quantity: { type: Number, default: 1 },
+            price: { type: Number }
+        }
     ],
+    total: { type: Number, required: true, default: 0 }
 })
 
 // cartsSchema.pre('find', function () {

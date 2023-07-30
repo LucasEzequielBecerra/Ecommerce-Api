@@ -1,5 +1,5 @@
-import CartRepositoy from "../persistence/daos/repository/cart.repository.js";
-const cartDaoMongo = new CartRepositoy()
+import CartRepository from "../persistence/daos/repository/cart.repository.js";
+const cartDaoMongo = new CartRepository()
 
 export const createCartService = async () => {
     try {
@@ -64,5 +64,14 @@ export const deleteCartService = async (id) => {
         return cartDeleted
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const purchaseProductsService = async (cid) => {
+    try {
+        const products = await cartDaoMongo.purchaseProducts(cid)
+        return products
+    } catch (error) {
+
     }
 }

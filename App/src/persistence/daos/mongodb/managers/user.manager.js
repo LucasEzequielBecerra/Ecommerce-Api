@@ -1,5 +1,6 @@
 import * as utils from '../../../../utils.js'
 import { userModel } from '../models/user.model.js';
+import { CartModel } from '../models/cart.model.js';
 
 export default class UserManagerMongo {
 
@@ -8,8 +9,8 @@ export default class UserManagerMongo {
             const { email, password } = user;
             const existUser = await userModel.find({ email });
             if (existUser.length === 0) {
-                console.log('nashe 1')
-                const newUser = await userModel.create({ ...user, password: utils.createHash(password), role: email === 'lucas@gmail.com' ? 'admin' : 'user' });
+                const newCart = await CartModel.create({})
+                const newUser = await userModel.create({ ...user, password: utils.createHash(password), role: email === 'lucas@gmail.com' ? 'admin' : 'user', cartId: newCart });
                 return newUser
             } else {
                 console.log('nashe')

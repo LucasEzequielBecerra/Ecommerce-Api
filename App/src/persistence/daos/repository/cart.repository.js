@@ -1,7 +1,7 @@
 import factory from "../../factory.js";
 const { cartManager } = factory
 
-export default class CartRepositoy {
+export default class CartRepository {
 
 
     async createCart() {
@@ -68,5 +68,10 @@ export default class CartRepositoy {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    async purchaseProducts(cid) {
+        const products = await cartManager.purchaseProducts(cid)
+        return products
     }
 }
