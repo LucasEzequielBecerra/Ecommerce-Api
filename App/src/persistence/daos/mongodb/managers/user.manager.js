@@ -1,5 +1,5 @@
 import * as utils from '../../../../utils.js'
-import { userModel } from '../models/user.model.js';
+import { UserModel } from '../models/user.model.js';
 import { CartModel } from '../models/cart.model.js';
 
 export default class UserManagerMongo {
@@ -7,10 +7,10 @@ export default class UserManagerMongo {
     async createUser(user) {
         try {
             const { email, password } = user;
-            const existUser = await userModel.find({ email });
+            const existUser = await UserModel.find({ email });
             if (existUser.length === 0) {
-                const newCart = await CartModel.create({})
-                const newUser = await userModel.create({ ...user, password: utils.createHash(password), role: email === 'lucas@gmail.com' ? 'admin' : 'user', cartId: newCart });
+                const newCart = email === 'lucas@gmail.com' ? null : await CartModel.create({})
+                const newUser = await UserModel.create({ ...user, password: utils.createHash(password), role: email === 'lucas@gmail.com' ? 'admin' : 'user', cartId: newCart });
                 return newUser
             } else {
                 console.log('nashe')
@@ -25,7 +25,7 @@ export default class UserManagerMongo {
     async loginUser(user) {
         try {
             const { email, password } = user;
-            const userExist = await userModel.findOne({ email });
+            const userExist = await UserModel.findOne({ email });
             const userIsValidPassword = userExist && utils.isValidPassword(userExist, password)
             if (userIsValidPassword) {
                 return userExist
@@ -40,7 +40,7 @@ export default class UserManagerMongo {
 
     async getUserByEmail(email) {
         try {
-            const user = await userModel.findOne({ email })
+            const user = await UserModel.findOne({ email })
             // console.log('mng', user)
             if (user) return user
             else return false
@@ -51,7 +51,7 @@ export default class UserManagerMongo {
 
     async getUserById(id) {
         try {
-            const userExist = await userModel.findById(id)
+            const userExist = await UserModel.findById(id)
             if (userExist) return userExist
             else return false
         } catch (error) {

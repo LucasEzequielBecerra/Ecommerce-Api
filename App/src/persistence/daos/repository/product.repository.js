@@ -3,13 +3,10 @@ const { productManager } = factory
 import ProductResponseDTO from "../../dtos/product/product.response.dto.js";
 
 export default class ProductRepository {
-    constructor() {
-        this.dao = productManager
-    }
 
     async getProdById(id) {
         try {
-            const product = await this.dao.getById(id)
+            const product = await productManager.getById(id)
             const prodDTO = new ProductResponseDTO(product)
             return prodDTO
         } catch (error) {
@@ -19,7 +16,7 @@ export default class ProductRepository {
 
     async createProd(obj) {
         try {
-            const prod = await this.dao.createProd(obj)
+            const prod = await productManager.createProd(obj)
             return prod
         } catch (error) {
             console.log(error)
@@ -28,7 +25,7 @@ export default class ProductRepository {
 
     async getAllProds(page, limit) {
         try {
-            const res = await this.dao.getAllProds(page, limit)
+            const res = await productManager.getAllProds(page, limit)
             return res
         } catch (error) {
             console.log(error)

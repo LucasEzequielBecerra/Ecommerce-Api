@@ -32,7 +32,7 @@ const usersSchema = new mongoose.Schema({
         default: false,
         required: true
     },
-    cartId: { type: Schema.Types.ObjectId, ref: 'carts', required: true }
+    cartId: { type: Schema.Types.ObjectId, ref: 'carts' }
 })
 
-export const userModel = mongoose.model('Users', usersSchema)
+export const UserModel = mongoose.model('Users', usersSchema)

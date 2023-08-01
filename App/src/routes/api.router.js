@@ -4,7 +4,6 @@ import cartRouter from './cart.router.js'
 import userRouter from './user.router.js'
 import { isLoggedIn } from "../middlewares/isLoggedIn.js";
 
-
 const router = new Router()
 
 router.use('/products', isLoggedIn, productRouter);

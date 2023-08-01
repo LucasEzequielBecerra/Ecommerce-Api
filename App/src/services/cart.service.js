@@ -16,13 +16,13 @@ export const addProductToCartService = async (cid, pid, quantity) => {
         const newCart = await cartDaoMongo.addProductToCart(cid, pid, quantity);
         return newCart
     } catch (error) {
-        console.log(error)
+        console.log('service error', error)
     }
 }
 
-export const deleteProductToCartService = async (cid, pid) => {
+export const deleteProductToCartService = async (cid, pid, quantity) => {
     try {
-        const newCart = await cartDaoMongo.deleteProductToCart(cid, pid)
+        const newCart = await cartDaoMongo.deleteProductToCart(cid, pid, quantity)
         return newCart
     } catch (error) {
         console.log(error)

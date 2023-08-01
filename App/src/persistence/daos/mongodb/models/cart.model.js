@@ -5,7 +5,7 @@ const cartsSchema = new mongoose.Schema({
         {
             _id: false,
             pid: { type: mongoose.Schema.Types.Mixed, required: true, ref: 'products' },
-            quantity: { type: Number, default: 1 },
+            quantity: { type: Number },
             price: { type: Number }
         }
     ],

@@ -12,62 +12,90 @@ export default class CartManagerMongo {
         }
     }
 
-    async addProductToCart(cid, pid, quantity = 1) {
+    async addProductToCart(cid, pid, quantity) {
         try {
-            const prodFind = await ProductModel.findById(pid)
+            const prodFindInDB = await ProductModel.findById(pid)
             const cartFind = await CartModel.findById(cid)
             if (!cartFind) throw new Error("Cart not found")
 
-            if (prodFind.stock < quantity) throw new Error(`The max stock is ${prodFind.stock}`)
-            else prodFind.stock -= quantity
+            const prodInCart = cartFind.products.find(product => product.pid === pid)
+            if (prodFindInDB.stock < quantity || prodInCart?.quantity + quantity > prodFindInDB.stock) throw new Error(`The max stock is ${prodFindInDB.stock}`)
+            else if (prodFindInDB.stock === 0) throw new Error('No stock available')
+
 
             let totalPrice = cartFind.total
 
-            const existingProductInCart = cartFind.products.find(productIt => productIt.pid === pid);
-            if (existingProductInCart) {
-                const updatedQuantity = existingProductInCart.quantity + quantity
+            if (prodInCart) {
+                const updatedQuantity = prodInCart.quantity + quantity
                 await CartModel.updateOne(
                     { _id: cid, 'products.pid': pid },
-                    { $set: { 'products.$.quantity': updatedQuantity, 'products.$.price': prodFind.price } }
+                    { $set: { 'products.$.quantity': updatedQuantity, 'products.$.price': prodFindInDB.price } }
                 );
             } else {
                 await CartModel.findOneAndUpdate(
                     { _id: cid },
-                    { $push: { products: { pid: pid, quantity: quantity, price: prodFind && prodFind.price } } },
+                    { $push: { products: { pid: pid, quantity: quantity, price: prodFindInDB && prodFindInDB.price } } },
                 );
             };
 
-            totalPrice += quantity * prodFind.price
-            cartFind.total = totalPrice
-            cartFind.save()
-            return cartFind
+            totalPrice += quantity * prodFindInDB.price
+            const cartUpdated = await CartModel.findById(cid)
+            cartUpdated.total = totalPrice
+            cartUpdated.save()
+            return cartUpdated
         } catch (error) {
-            console.log(error)
+            console.log('manager error', error.message)
         }
     }
 
     async purchaseProducts(cid) {
         try {
             const cartFind = await CartModel.findById(cid)
-            if (cartFind.products.length === 0) return
-            const prodsInCart = cartFind.products.map(product => product.pid)
-
-            return prodsInCart
-        } catch (error) {
-            console.log(error)
+            if (cartFind.products.length === 0) throw new Error('Cart not have any products')
+            cartFind.products.map(async (product) => {
+                const { pid } = product
+                const { quantity } = product
+                const prodFindInDB = await ProductModel.findById(pid)
+                if (prodFindInDB.stock >= quantity) {
+                    prodFindInDB.stock -= quantity
+                    prodFindInDB.save()
+                } else throw new Error('The product in cart is not stock available or not existing')
+            })
+            cartFind.total = 0
+            cartFind.products = []
+            cartFind.save()
+            const cartUpdated = await CartModel.findById(cid)
+            return cartUpdated
+        }
+        catch (error) {
+            console.log(error.message)
         }
     }
 
-    async deleteProductToCart(cid, pid) {
+    async deleteProductToCart(cid, pid, quantity) {
         try {
-            let cart = await CartModel.findById(cid)
-            const newProducts = cart.products.filter((prod) => prod._id.toString() !== pid.toString())
-            cart.products = newProducts
-            cart.total = 0
+            const cart = await CartModel.findById(cid)
+            const productToDelete = cart.products.find((prod) => prod.pid === pid)
+
+            if (!productToDelete) throw new Error('Product in cart not found')
+            if (productToDelete.quantity < quantity) throw new Error('The quantity must be minimum quantity')
+            if (quantity) {
+                productToDelete.quantity -= quantity
+            }
+
+            if (productToDelete.quantity === 0 || !quantity) {
+                const newProducts = cart.products.filter((prod) => prod.pid !== pid)
+                cart.products = newProducts
+            }
+
+            const amountFinal = productToDelete.price * productToDelete.quantity
+            cart.total = amountFinal
             cart.save()
+
             return cart
+
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 

@@ -19,13 +19,13 @@ export default class CartRepository {
             const newCart = await cartManager.addProductToCart(cid, pid, quantity);
             return newCart
         } catch (error) {
-            console.log(error)
+            console.log('repository error', error)
         }
     }
 
-    async deleteProductToCart(cid, pid) {
+    async deleteProductToCart(cid, pid, quantity) {
         try {
-            const newCart = await cartManager.deleteProductToCart(cid, pid)
+            const newCart = await cartManager.deleteProductToCart(cid, pid, quantity);
             return newCart
         } catch (error) {
             console.log(error)
