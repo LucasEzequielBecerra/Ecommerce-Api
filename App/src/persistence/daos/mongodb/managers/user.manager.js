@@ -10,7 +10,7 @@ export default class UserManagerMongo {
             const existUser = await UserModel.find({ email });
             if (existUser.length === 0) {
                 const newCart = email === 'lucas@gmail.com' ? null : await CartModel.create({})
-                const newUser = await UserModel.create({ ...user, password: utils.createHash(password), role: email === 'lucas@gmail.com' ? 'admin' : 'user', cartId: newCart });
+                const newUser = await UserModel.create({ ...user, password: utils.createHash(password), role: email === 'lucas@gmail.com' ? 'admin' : 'user', cartId: email === 'lucas@gmail.com' ? null : newCart });
                 return newUser
             } else {
                 console.log('nashe')

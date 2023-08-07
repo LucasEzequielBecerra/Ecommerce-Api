@@ -70,6 +70,7 @@ export const deleteCartService = async (id) => {
 export const purchaseProductsService = async (cid) => {
     try {
         const products = await cartDaoMongo.purchaseProducts(cid)
+        if (!products) throw new Error('products not found')
         return products
     } catch (error) {
 

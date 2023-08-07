@@ -1,10 +1,12 @@
 import * as service from '../services/product.service.js'
+import { HttpResponse } from '../utils/http.response.util.js'
+const httpResponse = new HttpResponse()
 
 export const addProductController = async (req, res, next) => {
     try {
         const prod = { ...req.body }
         const newProd = await service.addProductService(prod)
-        if (!newProd) throw new Error('validation error')
+        if (!newProd) return httpResponse.NotFound(res, "product not authorized")
         else res.json(newProd)
     } catch (error) {
         next(error)
@@ -15,7 +17,7 @@ export const getAllProductsController = async (req, res, next) => {
     try {
         const { page, limit } = req.query;
         const response = await service.getAllProductsService(page, limit)
-        // console.log(response.docs)
+        if (!response) return httpResponse.NotFound(res, "products not found")
         const next = response.hasNextPage ? `http://localhost:8080/api/products?page=${response.nextPage}` : null
         const prev = response.hasPrevPage ? `http://localhost:8080/api/products?page=${response.prevPage}` : null
         const productsFile = ({
