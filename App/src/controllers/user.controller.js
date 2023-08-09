@@ -1,4 +1,19 @@
 import * as services from '../services/user.service.js'
+import { UserModel } from '../persistence/daos/mongodb/models/user.model.js';
+import { generateUser } from '../utils/faker.users.util.js';
+
+export const createUsersMock = async (req, res, next) => {
+    let cant = 50
+    const { cantidad } = req.query
+    if (cantidad) cant = cantidad
+    const usersArray = []
+    for (let i = 0; i < cant; i++) {
+        const user = generateUser();
+        usersArray.push(user);
+    }
+    const users = await UserModel.create(usersArray)
+    res.json(users);
+};
 
 export const registerResponse = (req, res, next) => {
     try {
