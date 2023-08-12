@@ -10,6 +10,7 @@ import passport from 'passport';
 import apiRouter from "./routes/api.router.js"
 import './passport/github-passport.js'
 import './passport/local-passport.js'
+import { logger } from './utils/logger.util.js';
 
 const app = express();
 const PORT = config.PORT
@@ -44,7 +45,7 @@ app.use('/api', apiRouter)
 
 
 app.listen(PORT, () => {
-    console.log(`Server ok en puerto: ${PORT}`);
+    logger.info(`Server ok en puerto: ${PORT}`);
 });
 
 

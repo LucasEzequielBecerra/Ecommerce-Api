@@ -1,5 +1,6 @@
 import * as service from '../services/cart.service.js'
 import { HttpResponse } from '../utils/http.response.util.js'
+import { logger } from '../utils/logger.util.js'
 const httpResponse = new HttpResponse()
 
 export const createCartController = async (req, res, next) => {
@@ -7,6 +8,7 @@ export const createCartController = async (req, res, next) => {
         const newCart = await service.createCartService()
         res.json({ newCart })
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error)
     }
 }
@@ -20,6 +22,8 @@ export const addProductToCartController = async (req, res, next) => {
         if (!newCart) return httpResponse.NotFound(res, "cart or product not found")
         res.json(newCart)
     } catch (error) {
+        logger.error('controller error: ' + error.message)
+
         next('controller error', error)
     }
 }
@@ -32,6 +36,7 @@ export const deleteProductToCartController = async (req, res, next) => {
         if (!newCart) return httpResponse.NotFound(res, "cart or product not found")
         res.json({ newCart })
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error)
     }
 }
@@ -43,6 +48,7 @@ export const deleteAllProductsToCartController = async (req, res, next) => {
         if (!newCart) return httpResponse.NotFound(res, "cart or product not found")
         res.json({ newCart })
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error)
     }
 }
@@ -54,6 +60,7 @@ export const getCartByIdController = async (req, res, next) => {
         if (!doc) return httpResponse.NotFound(res, "cart not found")
         res.json({ doc });
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error);
     }
 }
@@ -65,6 +72,7 @@ export const purchaseProductsController = async (req, res, next) => {
         if (!doc) return httpResponse.NotFound(res, "cart not found")
         res.json(doc);
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error);
     }
 }

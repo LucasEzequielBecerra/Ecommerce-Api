@@ -2,5 +2,6 @@ import 'dotenv/config'
 
 export default {
     PORT: process.env.PORT,
-    MONGODB_URL_STRING_CONNECTION: process.env.MONGODB_URL_STRING_CONNECTION
+    MONGODB_URL_STRING_CONNECTION: process.env.MONGODB_URL_STRING_CONNECTION,
+    ENV: process.env.ENV
 }

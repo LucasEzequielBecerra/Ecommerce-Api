@@ -1,6 +1,7 @@
 import * as services from '../services/user.service.js'
 import { UserModel } from '../persistence/daos/mongodb/models/user.model.js';
 import { generateUser } from '../utils/faker.users.util.js';
+import { logger } from '../utils/logger.util.js';
 
 export const createUsersMock = async (req, res, next) => {
     let cant = 50
@@ -19,6 +20,7 @@ export const registerResponse = (req, res, next) => {
     try {
         res.json({ message: 'user registered' })
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error);
     }
 };
@@ -28,6 +30,7 @@ export const loginResponse = async (req, res, next) => {
         const user = await services.getUserByIdService(req.session.passport.user);
         res.json({ message: `welcome ${user.name}`, userData: user })
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error);
     }
 }
@@ -38,6 +41,7 @@ export const githubResponse = async (req, res, next) => {
         const user = await services.getUserByIdService(req.user._id)
         res.json({ user })
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error);
     }
 }

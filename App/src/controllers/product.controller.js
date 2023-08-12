@@ -1,5 +1,6 @@
 import * as service from '../services/product.service.js'
 import { HttpResponse } from '../utils/http.response.util.js'
+import { logger } from '../utils/logger.util.js'
 const httpResponse = new HttpResponse()
 
 export const addProductController = async (req, res, next) => {
@@ -9,6 +10,7 @@ export const addProductController = async (req, res, next) => {
         if (!newProd) return httpResponse.NotFound(res, "product not authorized")
         else res.json(newProd)
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error)
     }
 }
@@ -34,6 +36,7 @@ export const getAllProductsController = async (req, res, next) => {
         })
         res.json({ productsFile })
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error)
     }
 }
@@ -45,6 +48,7 @@ export const getAllProductsController = async (req, res, next) => {
 //         const newProduct = await service.addProductsToCart(idCart, idProduct)
 //         res.json(newProduct)
 //     } catch (error) {
+logger.error('controller error: ' + error.message)
 //         next(error)
 //     }
 // }
@@ -55,6 +59,7 @@ export const getAllProductsController = async (req, res, next) => {
 //         const doc = await service.getByIdService(id)
 //         res.json(doc)
 //     } catch (error) {
+logger.error('controller error: ' + error.message)
 //         next(error)
 //     }
 // }
@@ -69,6 +74,7 @@ export const getAllProductsController = async (req, res, next) => {
 //         });
 //         res.json(docUpd);
 //     } catch (error) {
+logger.error('controller error: ' + error.message)
 //         next(error);
 //     }
 // };
@@ -79,6 +85,7 @@ export const getAllProductsController = async (req, res, next) => {
 //         await deleteByIdService(id);
 //         res.json({ message: 'Product deleted successfully!' })
 //     } catch (error) {
+logger.error('controller error: ' + error.message)
 //         next(error);
 //     }
 // };
@@ -88,6 +95,7 @@ export const getAllProductsController = async (req, res, next) => {
 //         await deleteAllService()
 //         res.json({ message: 'Products deleted successfully' })
 //     } catch (error) {
+logger.error('controller error: ' + error.message)
 //         next(error)
 //     }
 // }

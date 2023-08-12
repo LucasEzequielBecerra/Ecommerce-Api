@@ -11,6 +11,7 @@ router.get('/register-github', passport.authenticate('github', { scope: ['user:e
 router.get('/profile-github', passport.authenticate('github', { scope: ['user:email'] }), githubResponse)
 
 router.post('/users-mocks', createUsersMock)
+
 export default router;
 
 

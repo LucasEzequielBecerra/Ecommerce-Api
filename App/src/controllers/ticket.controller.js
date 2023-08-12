@@ -1,6 +1,7 @@
 import { purchaseProductsService } from '../services/cart.service.js'
 import * as services from '../services/ticket.service.js'
 import { HttpResponse } from '../utils/http.response.util.js'
+import { logger } from '../utils/logger.util.js'
 const httpResponse = new HttpResponse()
 
 export const getAllTicketsController = async (req, res, next) => {
@@ -9,6 +10,7 @@ export const getAllTicketsController = async (req, res, next) => {
         // if (!tickets) return httpResponse.NotFound(res, "tickets not authorized")
         res.json(tickets)
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error)
     }
 }
@@ -22,6 +24,7 @@ export const createTicketsController = async (req, res, next) => {
         await purchaseProductsService(cid)
         res.json(newTicket)
     } catch (error) {
+        logger.error('controller error: ' + error.message)
         next(error)
     }
 }
