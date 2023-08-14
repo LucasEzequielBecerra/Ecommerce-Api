@@ -64,6 +64,15 @@ const loggerProdConfig = {
     level: 'info',
 }
 
+export const testLogger = () => {
+    logger.fatal('mensaje con nivel fatal');
+    logger.error('mensaje con nivel error');
+    logger.warn('mensaje con nivel warn');
+    logger.info('mensaje con nivel info');
+    logger.http('mensaje con nivel http');
+    logger.debug('mensaje con nivel debug');
+}
+
 
 
 export const logger = winston.createLogger(ENV === 'dev' ? loggerDevConfig : loggerProdConfig);

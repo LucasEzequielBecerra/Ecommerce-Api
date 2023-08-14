@@ -10,7 +10,7 @@ export const addProductController = async (req, res, next) => {
         if (!newProd) return httpResponse.NotFound(res, "product not authorized")
         else res.json(newProd)
     } catch (error) {
-        logger.error('controller error: ' + error.message)
+        logger.error('controller error: ')
         next(error)
     }
 }
@@ -36,7 +36,7 @@ export const getAllProductsController = async (req, res, next) => {
         })
         res.json({ productsFile })
     } catch (error) {
-        logger.error('controller error: ' + error.message)
+        logger.error('controller error: ')
         next(error)
     }
 }
@@ -48,7 +48,7 @@ export const getAllProductsController = async (req, res, next) => {
 //         const newProduct = await service.addProductsToCart(idCart, idProduct)
 //         res.json(newProduct)
 //     } catch (error) {
-logger.error('controller error: ' + error.message)
+logger.error('controller error: ')
 //         next(error)
 //     }
 // }
@@ -59,7 +59,7 @@ logger.error('controller error: ' + error.message)
 //         const doc = await service.getByIdService(id)
 //         res.json(doc)
 //     } catch (error) {
-logger.error('controller error: ' + error.message)
+logger.error('controller error: ')
 //         next(error)
 //     }
 // }
@@ -74,7 +74,7 @@ logger.error('controller error: ' + error.message)
 //         });
 //         res.json(docUpd);
 //     } catch (error) {
-logger.error('controller error: ' + error.message)
+logger.error('controller error: ')
 //         next(error);
 //     }
 // };
@@ -85,7 +85,7 @@ logger.error('controller error: ' + error.message)
 //         await deleteByIdService(id);
 //         res.json({ message: 'Product deleted successfully!' })
 //     } catch (error) {
-logger.error('controller error: ' + error.message)
+logger.error('controller error: ')
 //         next(error);
 //     }
 // };
@@ -95,7 +95,7 @@ logger.error('controller error: ' + error.message)
 //         await deleteAllService()
 //         res.json({ message: 'Products deleted successfully' })
 //     } catch (error) {
-logger.error('controller error: ' + error.message)
+logger.error('controller error: ')
 //         next(error)
 //     }
 // }

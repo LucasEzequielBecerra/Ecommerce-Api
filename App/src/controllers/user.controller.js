@@ -20,7 +20,7 @@ export const registerResponse = (req, res, next) => {
     try {
         res.json({ message: 'user registered' })
     } catch (error) {
-        logger.error('controller error: ' + error.message)
+        logger.error('controller error: ')
         next(error);
     }
 };
@@ -30,7 +30,7 @@ export const loginResponse = async (req, res, next) => {
         const user = await services.getUserByIdService(req.session.passport.user);
         res.json({ message: `welcome ${user.name}`, userData: user })
     } catch (error) {
-        logger.error('controller error: ' + error.message)
+        logger.error('controller error: ')
         next(error);
     }
 }
@@ -41,7 +41,7 @@ export const githubResponse = async (req, res, next) => {
         const user = await services.getUserByIdService(req.user._id)
         res.json({ user })
     } catch (error) {
-        logger.error('controller error: ' + error.message)
+        logger.error('controller error: ')
         next(error);
     }
 }
