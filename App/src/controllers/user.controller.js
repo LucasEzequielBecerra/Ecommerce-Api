@@ -25,6 +25,27 @@ export const registerResponse = (req, res, next) => {
     }
 };
 
+export const restorePasswordController = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        const user = await services.restorePasswordService(email, password)
+        res.json(user)
+    } catch (error) {
+        logger.error('controller error:')
+    }
+}
+
+export const changeRoleController = async (req, res) => {
+    try {
+        const { uid } = req.params
+        const user = await services.changeRoleService(uid)
+        if (user.role === 'admin') res.json({ message: 'this is admin, your role has not been changed' })
+        res.json({ message: 'your role has been changed' })
+    } catch (error) {
+        logger.error('controller error:')
+    }
+}
+
 export const loginResponse = async (req, res, next) => {
     try {
         const user = await services.getUserByIdService(req.session.passport.user);

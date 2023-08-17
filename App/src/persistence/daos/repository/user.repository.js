@@ -44,4 +44,22 @@ export default class UserRepository {
         }
     }
 
+    async restorePassword(email, password) {
+        try {
+            const user = await userManager.restorePassword(email, password)
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async changeRole(uid) {
+        try {
+            const user = await userManager.changeRole(uid)
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }

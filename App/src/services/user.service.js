@@ -9,3 +9,13 @@ export const getUserByEmailService = async (email) => {
     const user = await userDao.getUserByEmail(email)
     return user
 }
+
+export const restorePasswordService = async (email, password) => {
+    const user = await userDao.restorePassword(email, password)
+    return user
+}
+
+export const changeRoleService = async (uid) => {
+    const user = await userDao.changeRole(uid)
+    return user
+}

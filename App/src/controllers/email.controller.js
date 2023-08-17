@@ -9,7 +9,7 @@ export const sendGmailController = async (req, res) => {
         const user = await getUserByEmailService(email)
         if (!user) res.json({ error: 'email not registered' })
         const gmailOptions = {
-            from: 'lucaseramos13@gmail.com',
+            from: config.EMAIL_HOST,
             to: 'lucaseramos13@gmail.com',
             subject: 'Cambio de contraseña',
             html: `<h1>Hola ${user.name}, presiona en el siguiente link para reestablecer contraseña</h1>`
@@ -21,3 +21,4 @@ export const sendGmailController = async (req, res) => {
         console.log(error)
     }
 }
+

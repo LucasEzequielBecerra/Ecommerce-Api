@@ -4,9 +4,9 @@ import ProductResponseDTO from "../../dtos/product/product.response.dto.js";
 
 export default class ProductRepository {
 
-    async getProdById(id) {
+    async getProdById(pid) {
         try {
-            const product = await productManager.getById(id)
+            const product = await productManager.getProdById(pid)
             const prodDTO = new ProductResponseDTO(product)
             return prodDTO
         } catch (error) {
@@ -26,6 +26,15 @@ export default class ProductRepository {
     async getAllProds(page, limit) {
         try {
             const res = await productManager.getAllProds(page, limit)
+            return res
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async deleteProdById(pid, user) {
+        try {
+            const res = await productManager.deleteProdById(pid, user)
             return res
         } catch (error) {
             console.log(error)

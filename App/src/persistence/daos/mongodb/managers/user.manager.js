@@ -22,6 +22,19 @@ export default class UserManagerMongo {
         }
     }
 
+    async restorePassword(email, password) {
+        try {
+            const user = await UserModel.findOne({ email })
+            if (user.password === password) throw new Error('the password has already been')
+            user.password = utils.createHash(password)
+            user.save()
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     async loginUser(user) {
         try {
             const { email, password } = user;
@@ -53,6 +66,18 @@ export default class UserManagerMongo {
             const userExist = await UserModel.findById(id)
             if (userExist) return userExist
             else return false
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async changeRole(uid) {
+        try {
+            const user = await UserModel.findById(uid)
+            if (user.role === 'user') user.role = 'premium'
+            else if (user.role === 'premium') user.role = 'user'
+            user.save()
+            return user
         } catch (error) {
             console.log(error)
         }

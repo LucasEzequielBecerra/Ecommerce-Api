@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { registerResponse, loginResponse, githubResponse, logout, createUsersMock } from '../controllers/user.controller.js'
+import { registerResponse, loginResponse, githubResponse, logout, createUsersMock, restorePasswordController, changeRoleController } from '../controllers/user.controller.js'
 const router = new Router();
 import passport from 'passport';
 import { sendGmailController } from '../controllers/email.controller.js';
@@ -14,6 +14,8 @@ router.get('/profile-github', passport.authenticate('github', { scope: ['user:em
 router.post('/users-mocks', createUsersMock)
 
 router.post('/forgot-password', sendGmailController)
+router.post('/restore-password', restorePasswordController)
+router.post('/premium/:uid', changeRoleController)
 
 export default router;
 

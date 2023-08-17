@@ -12,6 +12,12 @@ export const isAdmin = async (req, res, next) => {
     else res.status(401).json({ msg: 'your are not authorized ' });
 }
 
+export const isPremium = async (req, res, next) => {
+    const user = await userManager.getUserById(req.session.passport.user)
+    if (user.role == 'premium' || user.role == 'admin') next()
+    else res.status(401).json({ msg: 'your are not authorized ' });
+}
+
 export const cartValidator = async (req, res, next) => {
     const { cid } = req.params
     const user = await userManager.getUserById(req.session.passport.user)

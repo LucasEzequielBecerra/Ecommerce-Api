@@ -1,4 +1,7 @@
 import { ProductModel } from "../models/product.model.js";
+import mongoose from "mongoose";
+
+
 
 
 export default class ProductManagerMongo {
@@ -21,12 +24,26 @@ export default class ProductManagerMongo {
         }
     }
 
-    async getProdById(id) {
+    async getProdById(pid) {
         try {
-            const res = await ProductModel.findById(id)
+            const res = await ProductModel.findById(pid)
             return res
         } catch (error) {
-
+            console.log(error)
         }
     }
+
+    async deleteProdById(pid, user) {
+        try {
+            const { email, role } = user
+            const prod = await this.getProdById(pid)
+            if (!prod) throw new Error('this prod does not exist')
+            const objectId = new mongoose.Types.ObjectId(pid)
+            if (prod.owner !== email && role !== 'admin') throw new Error('you dont have permission')
+            await ProductModel.deleteOne({ _id: objectId })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }

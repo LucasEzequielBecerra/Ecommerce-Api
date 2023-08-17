@@ -3,7 +3,7 @@ const productDaoMongo = new ProductRepository()
 
 export const addProductService = async (obj) => {
     try {
-        const newProd = await productDaoMongo.addProduct(obj)
+        const newProd = await productDaoMongo.createProd(obj)
         if (!newProd) throw new Error('validation Error');
         else return { message: 'Product saved successfully' }
     } catch (error) {
@@ -20,15 +20,24 @@ export const getAllProductsService = async (page, limit) => {
     }
 }
 
-// export const getByIdService = async (id) => {
-//     try {
-//         const doc = await productDaoMongo.getProductById(id)
-//         if (!doc) throw new Error('Product not found');
-//         else return doc
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+export const getByIdService = async (pid) => {
+    try {
+        const doc = await productDaoMongo.getProdById(pid)
+        if (!doc) throw new Error('Product not found');
+        else return doc
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const deleteByIdService = async (pid, user) => {
+    try {
+        const prodDel = await productDaoMongo.deleteProdById(pid, user)
+        return prodDel
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 // export const updateService = async (id, obj) => {
 //     try {
@@ -39,14 +48,6 @@ export const getAllProductsService = async (page, limit) => {
 //             const prodUpd = await productDaoMongo.updateProduct(id, obj)
 //             return prodUpd
 //         }
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-// export const deleteByIdService = async (id) => {
-//     try {
-//         const prodDel = await productDaoMongo.deleteProductById(id)
-//         return prodDel
 //     } catch (error) {
 //         console.log(error)
 //     }

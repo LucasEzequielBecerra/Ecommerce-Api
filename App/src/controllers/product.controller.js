@@ -1,3 +1,5 @@
+import factory from '../persistence/factory.js'
+const { userManager } = factory
 import * as service from '../services/product.service.js'
 import { HttpResponse } from '../utils/http.response.util.js'
 import { logger } from '../utils/logger.util.js'
@@ -5,9 +7,12 @@ const httpResponse = new HttpResponse()
 
 export const addProductController = async (req, res, next) => {
     try {
-        const prod = { ...req.body }
+        const { email, role } = await userManager.getUserById(req.session.passport.user)
+        const prod = { ...req.body, owner: role === 'admin' ? role : email }
+        console.log(prod)
         const newProd = await service.addProductService(prod)
-        if (!newProd) return httpResponse.NotFound(res, "product not authorized")
+        console.log(newProd)
+        if (!newProd) res.json({ message: 'Product already exists' })
         else res.json(newProd)
     } catch (error) {
         next(error)
@@ -41,28 +46,28 @@ export const getAllProductsController = async (req, res, next) => {
     }
 }
 
-// export const addProductsToCart = async (req, res, next) => {
-//     try {
-//         const { idCart } = req.params
-//         const { idProduct } = req.params
-//         const newProduct = await service.addProductsToCart(idCart, idProduct)
-//         res.json(newProduct)
-//     } catch (error) {
-logger.error('controller error: ')
-//         next(error)
-//     }
-// }
+export const getByIdController = async (req, res, next) => {
+    try {
+        const { pid } = req.params
+        const doc = await service.getByIdService(pid)
+        res.json(doc)
+    } catch (error) {
+        logger.error('controller error: ')
+        next(error)
+    }
+}
 
-// export const getByIdController = async (req, res, next) => {
-//     try {
-//         const { id } = req.params
-//         const doc = await service.getByIdService(id)
-//         res.json(doc)
-//     } catch (error) {
-logger.error('controller error: ')
-//         next(error)
-//     }
-// }
+export const deleteByIdController = async (req, res, next) => {
+    try {
+        const user = await userManager.getUserById(req.session.passport.user)
+        const { pid } = req.params;
+        await service.deleteByIdService(pid, user)
+        res.json({ message: 'Product deleted successfully!' })
+    } catch (error) {
+        logger.error('controller error: ')
+        next(error);
+    }
+};
 
 // export const updateController = async (req, res, next) => {
 //     try {
@@ -74,28 +79,18 @@ logger.error('controller error: ')
 //         });
 //         res.json(docUpd);
 //     } catch (error) {
-logger.error('controller error: ')
+// logger.error('controller error: ')
 //         next(error);
 //     }
 // };
 
-// export const deleteByIdController = async (req, res, next) => {
-//     try {
-//         const { id } = req.params;
-//         await deleteByIdService(id);
-//         res.json({ message: 'Product deleted successfully!' })
-//     } catch (error) {
-logger.error('controller error: ')
-//         next(error);
-//     }
-// };
 
 // export const deleteAllController = async (req, res, next) => {
 //     try {
 //         await deleteAllService()
 //         res.json({ message: 'Products deleted successfully' })
 //     } catch (error) {
-logger.error('controller error: ')
+// logger.error('controller error: ')
 //         next(error)
 //     }
 // }

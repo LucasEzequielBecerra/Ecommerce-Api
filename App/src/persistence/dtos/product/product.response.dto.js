@@ -3,5 +3,6 @@ export default class ProductResponseDTO {
         this.name = product.name
         this.description = product.description
         this.price = product.price
+        this.owner = product.owner
     }
 }
