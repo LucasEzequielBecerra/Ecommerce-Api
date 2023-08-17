@@ -41,9 +41,8 @@ export default class UserManagerMongo {
     async getUserByEmail(email) {
         try {
             const user = await UserModel.findOne({ email })
-            // console.log('mng', user)
-            if (user) return user
-            else return false
+            if (!user) return false
+            else return user
         } catch (error) {
             console.log(error)
         }

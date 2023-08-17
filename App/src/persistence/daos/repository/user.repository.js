@@ -16,8 +16,9 @@ export default class UserRepository {
     async getUserByEmail(email) {
         try {
             const user = await userManager.getUserByEmail(email)
-            // const userDTO = new UserResponseDTO(user)
-            return user
+            if (!user) return false
+            const userDTO = new UserResponseDTO(user)
+            return userDTO
         } catch (error) {
             console.log(error)
         }

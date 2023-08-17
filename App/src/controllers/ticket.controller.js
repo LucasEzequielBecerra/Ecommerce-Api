@@ -10,8 +10,8 @@ export const getAllTicketsController = async (req, res, next) => {
         // if (!tickets) return httpResponse.NotFound(res, "tickets not authorized")
         res.json(tickets)
     } catch (error) {
-        logger.error('controller error: ')
         next(error)
+        logger.error('controller error: ')
     }
 }
 
@@ -24,7 +24,7 @@ export const createTicketsController = async (req, res, next) => {
         await purchaseProductsService(cid)
         res.json(newTicket)
     } catch (error) {
-        logger.error('controller error: ')
         next(error)
+        logger.error('controller error: ')
     }
 }

@@ -10,8 +10,8 @@ export const addProductController = async (req, res, next) => {
         if (!newProd) return httpResponse.NotFound(res, "product not authorized")
         else res.json(newProd)
     } catch (error) {
-        logger.error('controller error: ')
         next(error)
+        logger.error('controller error: ')
     }
 }
 
@@ -36,8 +36,8 @@ export const getAllProductsController = async (req, res, next) => {
         })
         res.json({ productsFile })
     } catch (error) {
-        logger.error('controller error: ')
         next(error)
+        logger.error('controller error: ')
     }
 }
 
