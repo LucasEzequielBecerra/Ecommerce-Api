@@ -1,5 +1,7 @@
 import { CartModel } from "../models/cart.model.js"
 import { ProductModel } from "../models/product.model.js"
+import { UserModel } from "../models/user.model.js"
+
 
 export default class CartManagerMongo {
 
@@ -12,8 +14,9 @@ export default class CartManagerMongo {
         }
     }
 
-    async addProductToCart(cid, pid, quantity) {
+    async addProductToCart(cid, pid, quantity, uid) {
         try {
+            const { email } = await UserModel.findById(uid)
             const prodFindInDB = await ProductModel.findById(pid)
             const cartFind = await CartModel.findById(cid)
             if (!cartFind) throw new Error("Cart not found")
@@ -31,7 +34,8 @@ export default class CartManagerMongo {
                     { _id: cid, 'products.pid': pid },
                     { $set: { 'products.$.quantity': updatedQuantity, 'products.$.price': prodFindInDB.price } }
                 );
-            } else {
+            } else if (prodFindInDB.owner === email) throw new Error(`The owner ${prodFindInDB.owner} not purchase your product`)
+            else {
                 await CartModel.findOneAndUpdate(
                     { _id: cid },
                     { $push: { products: { pid: pid, quantity: quantity, price: prodFindInDB && prodFindInDB.price } } },
@@ -44,7 +48,7 @@ export default class CartManagerMongo {
             cartUpdated.save()
             return cartUpdated
         } catch (error) {
-            console.log('manager error', error.message)
+            throw new Error(error.message)
         }
     }
 

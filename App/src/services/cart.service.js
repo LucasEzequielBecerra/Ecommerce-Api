@@ -11,12 +11,12 @@ export const createCartService = async () => {
     }
 }
 
-export const addProductToCartService = async (cid, pid, quantity) => {
+export const addProductToCartService = async (cid, pid, quantity, uid) => {
     try {
-        const newCart = await cartDaoMongo.addProductToCart(cid, pid, quantity);
+        const newCart = await cartDaoMongo.addProductToCart(cid, pid, quantity, uid);
         return newCart
     } catch (error) {
-        console.log('service error', error)
+        throw new Error(error.message)
     }
 }
 

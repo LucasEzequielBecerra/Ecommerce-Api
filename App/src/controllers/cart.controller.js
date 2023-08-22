@@ -15,16 +15,17 @@ export const createCartController = async (req, res, next) => {
 
 export const addProductToCartController = async (req, res, next) => {
     try {
-        const { cid } = req.params
-        const { pid } = req.params
+        const { cid, pid } = req.params
+        const uid = req.session.passport.user
+        console.log(uid)
         const { quantity = 1 } = req.query
-        const newCart = await service.addProductToCartService(cid, pid, Number(quantity))
+        const newCart = await service.addProductToCartService(cid, pid, Number(quantity), uid)
         if (!newCart) return httpResponse.NotFound(res, "cart or product not found")
         res.json(newCart)
     } catch (error) {
 
-        logger.error('controller error: ')
-        next('controller error', error)
+        logger.error(error.message)
+        next(error.message)
     }
 }
 

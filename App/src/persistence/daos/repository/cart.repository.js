@@ -14,12 +14,12 @@ export default class CartRepository {
         }
     }
 
-    async addProductToCart(cid, pid, quantity) {
+    async addProductToCart(cid, pid, quantity, uid) {
         try {
-            const newCart = await cartManager.addProductToCart(cid, pid, quantity);
+            const newCart = await cartManager.addProductToCart(cid, pid, quantity, uid);
             return newCart
         } catch (error) {
-            console.log('repository error', error)
+            throw new Error(error.message)
         }
     }
 

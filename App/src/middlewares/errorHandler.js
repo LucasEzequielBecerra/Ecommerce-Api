@@ -1,4 +1,4 @@
-import { HttpResponse } from "../utils/http.response.util.js";
+import { HttpResponse } from "../utils/http.response.util.js"
 const httpResponse = new HttpResponse();
 
 export const errorHandler = (error, req, res, next) => {
