@@ -11,9 +11,15 @@ import apiRouter from "./routes/api.router.js"
 import './passport/github-passport.js'
 import './passport/local-passport.js'
 import { logger } from './utils/logger.util.js';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import { info } from './docs/info.js'
 
 const app = express();
 const PORT = config.PORT
+
+const specs = swaggerJSDoc(info)
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs))
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

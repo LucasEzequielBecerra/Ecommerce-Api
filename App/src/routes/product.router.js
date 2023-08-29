@@ -7,7 +7,7 @@ const router = Router();
 router.post('/', isPremium, controller.addProductController)
 router.get('/', controller.getAllProductsController);
 router.get('/:pid', controller.getByIdController);
-router.delete('/delete/:pid', isPremium, controller.deleteByIdController);
+router.delete('/:pid', isPremium, controller.deleteByIdController);
 // router.put('/:pid', updateController);
 // router.delete('/', deleteAllController);
 

@@ -25,7 +25,7 @@ export const addProductToCartController = async (req, res, next) => {
     } catch (error) {
 
         logger.error(error.message)
-        next(error.message)
+        next(error.messNage)
     }
 }
 

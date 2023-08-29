@@ -1,0 +1,33 @@
+components:
+  parameters:
+    schemas:
+      NewProduct:
+        type: object
+        required: 
+          - name
+          - description
+          - price
+          - stock
+          - owner
+        properties:
+          name:
+            type: string
+            description: name of the product
+          description:
+            type: string
+            description: description of the product
+          price:
+            type: number
+            description: price of the product
+          stock:
+            type: number
+            description: stock of the product
+          owner:
+            type: string
+            description: owner of the product
+        example:
+          name: mañanita
+          description: yerba
+          price: 100
+          stock: 10
+          owner: admin
