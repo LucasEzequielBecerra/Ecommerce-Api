@@ -39,7 +39,7 @@ export const getAllProductsController = async (req, res, next) => {
             prevLink: prev,
             nextLink: next
         })
-        res.json({ productsFile })
+        res.json({ ...productsFile })
     } catch (error) {
         next(error)
         logger.error('controller error: ')

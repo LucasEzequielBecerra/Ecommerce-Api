@@ -8,7 +8,6 @@ components:
           - description
           - price
           - stock
-          - owner
         properties:
           name:
             type: string
@@ -22,12 +21,9 @@ components:
           stock:
             type: number
             description: stock of the product
-          owner:
-            type: string
-            description: owner of the product
         example:
           name: mañanita
           description: yerba
           price: 100
           stock: 10
-          owner: admin
+      

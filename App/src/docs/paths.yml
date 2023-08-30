@@ -16,7 +16,7 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schema/Products/Product'
+                $ref: '#/components/schemas/Products/AddProduct'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Products/ValidationSchemaError'
@@ -33,7 +33,7 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schema/Products/GetAllProducts'
+                $ref: '#/components/schemas/Products/GetAllProducts'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Products/ValidationSchemaError'
@@ -58,7 +58,7 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schema/Products/Product'
+                $ref: '#/components/schemas/Products/Product'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Products/ValidationSchemaError'
@@ -82,7 +82,7 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schema/Products/Product'
+                $ref: '#/components/schemas/Products/DeleteProduct'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Products/ValidationSchemaError'

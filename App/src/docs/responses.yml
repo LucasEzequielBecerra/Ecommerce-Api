@@ -6,33 +6,99 @@ components:
         properties:
           id:
             type: string
-            description: Id de la noticia
-          title:
+            description: Id of the product
+          name:
             type: string
-            description: Titulo de la noticia
-          body:
+            description: Name of the product
+          description:
             type: string
-            description: Contenido de la noticia
-          author:
+            description: Description of the product
+          price:
+            type: number
+            description: Price of the product
+          stock:
+            type: number
+            description: Stock of the product
+          owner:
             type: string
-            description: Nombre del autor de la noticia
-          image:
-            type: string
-            description: Url de la imagen de la noticia
-          Date:
-            type: date
-            description: Fecha de publicación de la noticia
+            description: Owner of the product
         example:
-          id: 6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b
-          title: Argentina Campeón del mundo!
-          body: Argentina se consagró campeon el mundo
-          Author: Gonzalo Bonadeo
-          Image: http://sdfsdf.com/sdfsdf.jpg
-          Date: 22/02/2023
+          id: 64de85872fa2c22a2a3f4237
+          name: mañanita
+          description: yerba
+          price: 100
+          stock: 10
+          owner: admin
+
+      AddProduct:
+        type: object
+        properties:
+          message:
+            type: string
+            description: message of status
+        example: 
+          message: Product saved successfully
 
       GetAllProducts:
-        type: array
-        items:
+        type: object 
+        properties:
+          status:
+            type: string
+            description: Status of requested products
+          payload:
+            type: array
+            items:
+              $ref: '#/components/schemas/Products/Product'
+          totalPages:
+            type: number
+            description: Total pages of products
+          prevPage:
+            type: number
+            description: Previous page of products
+          nextPage:
+            type: number
+            description: Next page of products
+          page:
+            type: number
+            description: Page of products
+          hasPrevPage:
+            type: boolean
+            description: Has Previus Page of products
+          hasNextPage:
+            type: boolean
+            description: Has Next Page of Products
+          prevLink:
+            type: string
+            description: Link to previous page of products
+          nextLink:
+            type: string 
+            description: Link to next page of products
+        example:
+          status: success,
+          payload:
+            _id: 64de85872fa2c22a2a3f4237
+            name: mañanita
+            description: yerba
+            price: 200
+            stock: 30
+            owner: admin
+          totalPages: 1
+          prevPage: null
+          nextPage: null
+          page: 1
+          hasPrevPage: false
+          hasNextPage: false
+          prevLink: null
+          nextLink: null
+
+      DeleteProduct:
+        type: object
+        properties:
+          message:
+            type: string
+            description: message about status of delete
+        example:
+          message: Product deleted successfully!
         
       ValidationSchemaError:
         type: object
@@ -41,7 +107,8 @@ components:
             type: string
             description: Mensaje de error de validación de schema
         example:
-          message: "El schema de la noticia no es válido"
+          message: El schema de the product no es válido
+      
       NotFound:
         type: object
         properties:
@@ -50,6 +117,7 @@ components:
             description: Mensaje de error de servidor
           example:
             message: Error de servidor
+      
       ErrorGetById:
         type: object
         properties:
