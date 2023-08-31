@@ -126,3 +126,64 @@ components:
             description: Mensaje de error no se encuentra noticia
         example:
           message: No se encontró noticia con id ----
+    
+    Carts:
+      Cart:
+        type: object
+        properties:
+          _id:
+            type: string
+            description: id of the cart
+          total: 
+            type: number
+            description: total mount of the purchase
+          products:
+            type: array
+            items:
+              type: object
+              properties:
+                pid:
+                  type: string
+                  description: id of the products
+                quantity:
+                  type: number
+                  description: quantity of the products
+                price:
+                  type: number
+                  description: price of the product
+        example:
+          _id: 64dd59615d4e5a61401ee97a
+          total: 3000
+          products:
+          -
+            pid: 64e515945ceccf58201d6ddf
+            quantity: 6
+            price: 500
+      Ticket:
+        type: object
+        properties: 
+          code: 
+            type: string
+            description: unique code of the ticket
+          purchase_datetime:
+            type: date
+            descrption: datetime of the purchase
+          cart: 
+            type: string
+            description: id of the cart
+          amount:
+            type: number
+            description: amount of the cart
+          purchaser:
+            type: string
+            description: mail of the purchaser
+          _id: 
+            type: string
+            description: id of the purchase
+        example:
+          code: llyenw2d1khwv3gma
+          purchase_datetime: 2023-08-31T00:05:54.000Z
+          cart: 64dd59615d4e5a61401ee97a
+          amount: 3000
+          purchaser: lucas@gmail.com
+          _id: 64efd962f96c922ebd79d746

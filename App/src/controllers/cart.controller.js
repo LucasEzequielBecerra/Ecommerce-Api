@@ -6,7 +6,7 @@ const httpResponse = new HttpResponse()
 export const createCartController = async (req, res, next) => {
     try {
         const newCart = await service.createCartService()
-        res.json({ newCart })
+        res.json(newCart)
     } catch (error) {
         next(error)
         logger.error('controller error: ')
@@ -35,7 +35,7 @@ export const deleteProductToCartController = async (req, res, next) => {
         const { quantity } = req.query
         const newCart = await service.deleteProductToCartService(cid, pid, Number(quantity))
         if (!newCart) return httpResponse.NotFound(res, "cart or product not found")
-        res.json({ newCart })
+        res.json(newCart)
     } catch (error) {
         next(error)
         logger.error('controller error: ')
@@ -47,7 +47,7 @@ export const deleteAllProductsToCartController = async (req, res, next) => {
         const { cid } = req.params
         const newCart = await service.deleteAllProductsToCartService(cid)
         if (!newCart) return httpResponse.NotFound(res, "cart or product not found")
-        res.json({ newCart })
+        res.json(newCart)
     } catch (error) {
         next(error)
         logger.error('controller error: ')
@@ -59,7 +59,7 @@ export const getCartByIdController = async (req, res, next) => {
         const { cid } = req.params
         const doc = await service.getCartByIdService(cid)
         if (!doc) return httpResponse.NotFound(res, "cart not found")
-        res.json({ doc });
+        res.json(doc);
     } catch (error) {
         next(error);
         logger.error('controller error: ')

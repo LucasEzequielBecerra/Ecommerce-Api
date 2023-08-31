@@ -40,14 +40,14 @@ paths:
         500:
           description: Error on the server
           $ref: '#/components/schema/Products/NotFound'
-  /api/products/{id}:
+  /api/products/{pid}:
     get:
       tags:
       - Products
       summary: Get products by id
       parameters:
         - in: path
-          name: id
+          name: pid
           required: true
           description: string id required
           schema:
@@ -71,7 +71,7 @@ paths:
       summary: Delete products by id
       parameters:
         - in: path
-          name: id
+          name: pid
           required: true
           description: string id required
           schema:
@@ -89,10 +89,161 @@ paths:
         500:
           description: Error on the server
           $ref: '#/components/schema/Products/NotFound'
+  
+  /api/carts/tickets:
+    get:
+      tags:
+      - Carts
+      summary: Get all tickets
+      responses:
+        200:
+          description: Tickets found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/Ticket'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  
+  /api/carts/{cid}:
+    get:
+      tags:
+      - Carts
+      summary: Get one cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: string id required
+          schema:
+            type: string
+      responses:
+        200:
+          description: Cart found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/Cart'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:  
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+    delete:
+      tags:
+      - Carts
+      summary: Delete all products in cart by id
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: string id required
+          schema:
+            type: string
+      responses:
+        200:
+          description: All products delete
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Carts/Cart'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  
+  /api/carts/{cid}/purchase:
+    post:
+      tags:
+      - Carts
+      summary: Purchase products
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: string id required
+          schema:
+            type: string
+      responses:
+        200:
+          description: Products purchased
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/Ticket'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:  
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
 
+  /api/carts/{cid}/products/{pid}:
+    put:
+      tags:
+      - Carts
+      summary: Add products to cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: string id required
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: string id required
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/Cart'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:  
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+    delete:
+      tags:
+      - Carts
+      summary: Delete a product in cart
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          description: string id required
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          description: string id required
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product in cart deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/Cart'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:  
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
 
-
-# tags:
-# summary:
-# requestBody:
-# responses:

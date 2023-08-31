@@ -1,7 +1,8 @@
 import { Router } from "express";
 import * as controllerCart from '../controllers/cart.controller.js'
 import * as controllerTicket from '../controllers/ticket.controller.js'
-import { isUser, cartValidator, isAdmin, isPremium } from "../middlewares/auth.js";
+import { isUser, cartValidator, isAdmin } from "../middlewares/auth.js";
+
 const router = new Router();
 
 router.get('/tickets', isAdmin, controllerTicket.getAllTicketsController)
