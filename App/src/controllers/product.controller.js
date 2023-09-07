@@ -50,6 +50,7 @@ export const getByIdController = async (req, res, next) => {
     try {
         const { pid } = req.params
         const doc = await service.getByIdService(pid)
+        if (!doc) res.json({ message: 'product not found' })
         res.json(doc)
     } catch (error) {
         logger.error('controller error: ')
@@ -61,10 +62,12 @@ export const deleteByIdController = async (req, res, next) => {
     try {
         const user = await userManager.getUserById(req.session.passport.user)
         const { pid } = req.params;
-        await service.deleteByIdService(pid, user)
-        res.json({ message: 'Product deleted successfully!' })
+        const response = await service.deleteByIdService(pid, user)
+        console.log(response)
+        if (response === false) res.json({ message: 'the prod has not exist' })
+        else res.json({ message: 'Product deleted successfully!' })
     } catch (error) {
-        logger.error('controller error: ')
+        logger.error('controller error:' + error.message)
         next(error);
     }
 };
@@ -85,12 +88,12 @@ export const deleteByIdController = async (req, res, next) => {
 // };
 
 
-// export const deleteAllController = async (req, res, next) => {
-//     try {
-//         await deleteAllService()
-//         res.json({ message: 'Products deleted successfully' })
-//     } catch (error) {
-// logger.error('controller error: ')
-//         next(error)
-//     }
-// }
+export const deleteAllController = async (req, res, next) => {
+    try {
+        await service.deleteAllService()
+        res.json({ message: 'Products deleted successfully' })
+    } catch (error) {
+        logger.error('controller error: ')
+        next(error)
+    }
+}

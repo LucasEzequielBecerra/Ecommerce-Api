@@ -2,6 +2,7 @@ import express from 'express';
 import { errorHandler } from './middlewares/errorHandler.js';
 import morgan from 'morgan'
 import config from '../config.js';
+import mongoStoreString from './persistence/factory.js'
 import { __dirname } from './utils.js';
 import mongoStore from 'connect-mongo'
 import cookieParser from 'cookie-parser'
@@ -26,7 +27,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'))
 
-
 app.use(cookieParser())
 app.use(
     session({
@@ -37,7 +37,7 @@ app.use(
             maxAge: 1000000
         },
         store: new mongoStore({
-            mongoUrl: config.MONGODB_URL_STRING_CONNECTION,
+            mongoUrl: mongoStoreString.mongoStoreString,
             // ttl: 30
         })
     })

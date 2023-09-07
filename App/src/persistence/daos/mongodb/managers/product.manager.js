@@ -37,10 +37,19 @@ export default class ProductManagerMongo {
         try {
             const { email, role } = user
             const prod = await this.getProdById(pid)
-            if (!prod) throw new Error('this prod does not exist')
+            console.log(prod)
+            if (!prod) return false
             const objectId = new mongoose.Types.ObjectId(pid)
             if (prod.owner !== email && role !== 'admin') throw new Error('you dont have permission')
             await ProductModel.deleteOne({ _id: objectId })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async deleteAllProducts() {
+        try {
+            await ProductModel.deleteMany()
         } catch (error) {
             console.log(error)
         }

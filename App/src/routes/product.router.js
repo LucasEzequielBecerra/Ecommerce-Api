@@ -9,6 +9,6 @@ router.get('/', controller.getAllProductsController);
 router.get('/:pid', controller.getByIdController);
 router.delete('/:pid', isPremium, controller.deleteByIdController);
 // router.put('/:pid', updateController);
-// router.delete('/', deleteAllController);
+router.delete('/', controller.deleteAllController);
 
 export default router;

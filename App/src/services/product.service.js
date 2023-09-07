@@ -52,10 +52,11 @@ export const deleteByIdService = async (pid, user) => {
 //         console.log(error)
 //     }
 // }
-// export const deleteAllService = async () => {
-//     try {
-//         await productDaoMongo.deleteAllProducts()
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+
+export const deleteAllService = async () => {
+    try {
+        await productDaoMongo.deleteAllProducts()
+    } catch (error) {
+        console.log(error)
+    }
+}

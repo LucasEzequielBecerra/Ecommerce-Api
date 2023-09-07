@@ -15,4 +15,5 @@ router.get('/loggerTest', (req, res) => {
     res.json({ message: 'mira la consola' })
 })
 
+
 export default router;

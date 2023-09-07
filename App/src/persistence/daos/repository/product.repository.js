@@ -7,6 +7,7 @@ export default class ProductRepository {
     async getProdById(pid) {
         try {
             const product = await productManager.getProdById(pid)
+            if (!product) throw new Error("Product not found")
             const prodDTO = new ProductResponseDTO(product)
             return prodDTO
         } catch (error) {
@@ -35,7 +36,16 @@ export default class ProductRepository {
     async deleteProdById(pid, user) {
         try {
             const res = await productManager.deleteProdById(pid, user)
+            console.log(res, 'xd')
             return res
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async deleteAllProducts() {
+        try {
+            await productManager.deleteAllProducts()
         } catch (error) {
             console.log(error)
         }
