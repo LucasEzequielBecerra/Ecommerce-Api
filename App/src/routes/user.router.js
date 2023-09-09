@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { registerResponse, loginResponse, githubResponse, logout, createUsersMock, restorePasswordController, changeRoleController } from '../controllers/user.controller.js'
+import { registerResponse, loginResponse, githubResponse, logout, createUsersMock, restorePasswordController, changeRoleController, uploadDocumentsController } from '../controllers/user.controller.js'
 const router = new Router();
 import passport from 'passport';
 import { sendGmailController } from '../controllers/email.controller.js';
+import { uploader } from '../middlewares/multer.js';
 
 router.post('/register', passport.authenticate('register'), registerResponse);
 router.post('/login', passport.authenticate('login'), loginResponse);
@@ -16,6 +17,7 @@ router.post('/users-mocks', createUsersMock)
 router.post('/forgot-password', sendGmailController)
 router.post('/restore-password', restorePasswordController)
 router.post('/premium/:uid', changeRoleController)
+router.post('/:uid/documents', uploader.any(), uploadDocumentsController)
 
 export default router;
 

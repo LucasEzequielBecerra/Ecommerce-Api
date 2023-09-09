@@ -62,4 +62,12 @@ export default class UserRepository {
         }
     }
 
+    async uploadDocuments(uid, file) {
+        try {
+            const user = await userManager.uploadDocuments(uid, file)
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

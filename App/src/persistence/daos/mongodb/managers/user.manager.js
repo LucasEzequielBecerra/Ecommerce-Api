@@ -74,8 +74,24 @@ export default class UserManagerMongo {
     async changeRole(uid) {
         try {
             const user = await UserModel.findById(uid)
-            if (user.role === 'user') user.role = 'premium'
+            if (!user) throw new Error(`User ${uid} does not exist`)
+            if (user.role === 'user' && user.documents.length >= 1) {
+                user.role = 'premium'
+            }
+            else if (user.documents.length === 0) throw new Error('the file is not charged ')
             else if (user.role === 'premium') user.role = 'user'
+            user.save()
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async uploadDocuments(uid, file) {
+        try {
+            const user = await UserModel.findById(uid)
+            if (!user) throw new Error(`User ${uid} does not exist`)
+            user.documents.push(file)
             user.save()
             return user
         } catch (error) {

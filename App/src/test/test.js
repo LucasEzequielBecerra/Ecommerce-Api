@@ -24,11 +24,10 @@ describe('Tests API products', () => {
             body: JSON.stringify(user)
         })
         const responsePost = await responseLogin.json();
-        console.log(responsePost);
-        // await fetch(`${apiURL}products`, { method: 'DELETE' })
+        console.log(responsePost); /* -----> Mensaje de bienvenida y loggeo con exito */
         const response = await fetch(`${apiURL}products`);
         const responseGet = await response.json();
-        console.log(responseGet, 'ressssssssss')
+        console.log(responseGet) /* ---> Dice que la sesion esta expirada */
         // assert.strictEqual(Array.isArray(responseGet.payload), true);
         // assert.equal(responseGet.payload.length === 0, true);
 

@@ -19,3 +19,12 @@ export const changeRoleService = async (uid) => {
     const user = await userDao.changeRole(uid)
     return user
 }
+
+export const uploadDocumentsService = async (uid, file) => {
+    try {
+        const user = await userDao.uploadDocuments(uid, file)
+        return user
+    } catch (error) {
+        console.log(error)
+    }
+}
