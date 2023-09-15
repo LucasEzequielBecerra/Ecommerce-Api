@@ -39,7 +39,7 @@ const usersSchema = new mongoose.Schema({
             reference: { type: String }
         }
     ],
-    last_connection: { type: Date }
+    last_connection: { type: String }
 })
 
 export const UserModel = mongoose.model('Users', usersSchema)

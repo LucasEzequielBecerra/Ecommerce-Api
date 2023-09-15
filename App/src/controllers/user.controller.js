@@ -49,7 +49,7 @@ export const changeRoleController = async (req, res) => {
 
 export const loginResponse = async (req, res, next) => {
     try {
-        const user = await services.getUserByIdService(req.session.passport.user);
+        const user = await services.getUserByIdService(req.session.passport?.user);
         res.json({ message: `welcome ${user.name}`, userData: user })
     } catch (error) {
         next(error);
@@ -68,12 +68,17 @@ export const githubResponse = async (req, res, next) => {
     }
 }
 
-export const logout = (req, res, next) => {
+export const logoutUserController = async (req, res, next) => {
     try {
-        req.session.destroy((err) => {
-            if (!err) res.json({ message: 'sesion:logout' });
-            else res.send({ status: 'Logout ERROR', body: err });
-        });
+        const user = await services.getUserByIdService(req.session.passport?.user);
+        if (user) {
+            await services.logoutUserService(req.session.passport.user)
+            req.session.destroy((err) => {
+                if (!err) res.json({ message: 'Session: logout' });
+                else res.send({ status: 'Logout ERROR', body: err });
+            });
+        }
+        else throw new Error('there is not session started')
     } catch (error) {
         next(error)
     }
@@ -81,11 +86,14 @@ export const logout = (req, res, next) => {
 
 export const uploadDocumentsController = async (req, res, next) => {
     try {
-        console.log(req.files)
         const { uid } = req.params
-        // const file = req.file
-        // const upl = await services.uploadDocumentsService(uid, file)
-        res.json(req.file)
+        const file = req.files.map((file) =>
+        ({
+            name: file.originalname,
+            reference: file.fieldname,
+        }))
+        const upl = await services.uploadDocumentsService(uid, file)
+        res.json(upl)
     } catch (error) {
         next(error)
     }

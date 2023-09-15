@@ -28,3 +28,11 @@ export const uploadDocumentsService = async (uid, file) => {
         console.log(error)
     }
 }
+
+export const logoutUserService = async (user) => {
+    try {
+        await userDao.logoutUser(user)
+    } catch (error) {
+        console.log(error)
+    }
+}

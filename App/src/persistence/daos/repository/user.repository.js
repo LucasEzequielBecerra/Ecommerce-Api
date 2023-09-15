@@ -7,6 +7,7 @@ export default class UserRepository {
     async getUserById(id) {
         try {
             const user = await userManager.getUserById(id)
+            if (!user) return false
             const userDTO = new UserResponseDTO(user)
             return userDTO
         } catch (error) {
@@ -66,6 +67,14 @@ export default class UserRepository {
         try {
             const user = await userManager.uploadDocuments(uid, file)
             return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async logoutUser(user) {
+        try {
+            await userManager.logoutUser(user)
         } catch (error) {
             console.log(error)
         }

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { registerResponse, loginResponse, githubResponse, logout, createUsersMock, restorePasswordController, changeRoleController, uploadDocumentsController } from '../controllers/user.controller.js'
+import { registerResponse, loginResponse, githubResponse, createUsersMock, restorePasswordController, changeRoleController, uploadDocumentsController, logoutUserController } from '../controllers/user.controller.js'
 const router = new Router();
 import passport from 'passport';
 import { sendGmailController } from '../controllers/email.controller.js';
@@ -7,7 +7,7 @@ import { uploader } from '../middlewares/multer.js';
 
 router.post('/register', passport.authenticate('register'), registerResponse);
 router.post('/login', passport.authenticate('login'), loginResponse);
-router.post('/logout', logout)
+router.post('/logout', logoutUserController)
 
 router.get('/register-github', passport.authenticate('github', { scope: ['user:email'] }))
 router.get('/profile-github', passport.authenticate('github', { scope: ['user:email'] }), githubResponse)

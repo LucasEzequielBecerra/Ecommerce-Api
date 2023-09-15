@@ -41,6 +41,10 @@ export default class UserManagerMongo {
             const userExist = await UserModel.findOne({ email });
             const userIsValidPassword = userExist && utils.isValidPassword(userExist, password)
             if (userIsValidPassword) {
+                const actualTime = new Date()
+                const connectionTime = actualTime.getHours() + ':' + actualTime.getMinutes() + ':' + actualTime.getSeconds()
+                userExist.last_connection = connectionTime
+                userExist.save()
                 return userExist
             } else {
                 return null
@@ -75,10 +79,15 @@ export default class UserManagerMongo {
         try {
             const user = await UserModel.findById(uid)
             if (!user) throw new Error(`User ${uid} does not exist`)
-            if (user.role === 'user' && user.documents.length >= 1) {
+            const documents = user.documents.map((doc) => doc.reference)
+            console.log(documents)
+            const docOk = documents.includes('identificacion')
+                && documents.includes('comprobante de domicilio')
+                && documents.includes('comprobante de estado de cuenta')
+            if (user.role === 'user' && docOk) {
                 user.role = 'premium'
             }
-            else if (user.documents.length === 0) throw new Error('the file is not charged ')
+            else if (!docOk) throw new Error('the all files are not charged ')
             else if (user.role === 'premium') user.role = 'user'
             user.save()
             return user
@@ -91,9 +100,22 @@ export default class UserManagerMongo {
         try {
             const user = await UserModel.findById(uid)
             if (!user) throw new Error(`User ${uid} does not exist`)
-            user.documents.push(file)
+            console.log(file)
+            user.documents.push(...file)
             user.save()
             return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async logoutUser(user) {
+        try {
+            const userExist = await UserModel.findById(user)
+            const actualTime = new Date()
+            const connectionTime = actualTime.getHours() + ':' + actualTime.getMinutes() + ':' + actualTime.getSeconds()
+            userExist.last_connection = connectionTime
+            userExist.save()
         } catch (error) {
             console.log(error)
         }
