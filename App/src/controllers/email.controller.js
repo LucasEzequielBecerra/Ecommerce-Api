@@ -12,7 +12,7 @@ export const sendGmailController = async (req, res) => {
             from: config.EMAIL_HOST,
             to: 'lucaseramos13@gmail.com',
             subject: 'Cambio de contraseña',
-            html: `<h1>Hola ${user.name}, presiona en el siguiente link para reestablecer contraseña</h1>`
+            html: `<h1>Hola ${user.name}, su cuenta ha sido eliminado por inactividad</h1>`
         }
         const response = await transporter.sendMail(gmailOptions)
         console.log('email sent')

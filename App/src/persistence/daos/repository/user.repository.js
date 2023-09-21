@@ -25,6 +25,24 @@ export default class UserRepository {
         }
     }
 
+    async getUsers() {
+        try {
+            const users = await userManager.getUsers()
+            return users
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async deleteDisconnectedUsers() {
+        try {
+            const users = await userManager.deleteDisconnectedUsers()
+            return users
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     async loginUser(user) {
         try {
             const userExist = await userManager.loginUser(user)

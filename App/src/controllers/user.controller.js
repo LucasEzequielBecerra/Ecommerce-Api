@@ -2,7 +2,7 @@ import * as services from '../services/user.service.js'
 import { UserModel } from '../persistence/daos/mongodb/models/user.model.js';
 import { generateUser } from '../utils/faker.users.util.js';
 import { logger } from '../utils/logger.util.js';
-import { uploader } from '../middlewares/multer.js';
+
 
 export const createUsersMock = async (req, res, next) => {
     let cant = 50
@@ -25,6 +25,25 @@ export const registerResponse = (req, res, next) => {
         logger.error('controller error: ')
     }
 };
+
+export const getUsersController = async (req, res, next) => {
+    try {
+        const users = await services.getUsersService()
+        res.json(users)
+    } catch (error) {
+        next(error);
+        logger.error('controller error: ')
+    }
+}
+
+export const deleteDisconnectedUsersControler = async (req, res, next) => {
+    try {
+        const users = await services.deleteDisconnectedUsersService()
+        res.json(users)
+    } catch (error) {
+        next(error)
+    }
+}
 
 export const restorePasswordController = async (req, res) => {
     try {

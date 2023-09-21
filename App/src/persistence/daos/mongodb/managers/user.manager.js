@@ -1,6 +1,8 @@
 import * as utils from '../../../../utils.js'
 import { UserModel } from '../models/user.model.js';
 import { CartModel } from '../models/cart.model.js';
+import { transporter } from '../../../../services/email.service.js';
+import config from '../../../../../config.js';
 
 export default class UserManagerMongo {
 
@@ -19,6 +21,50 @@ export default class UserManagerMongo {
         } catch (error) {
             console.log(error)
             throw new Error(error)
+        }
+    }
+
+    async getUsers() {
+        try {
+            const users = await UserModel.find({})
+            return users
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async deleteDisconnectedUsers() {
+        try {
+            const actualTime = new Date().getTime()
+            const users = await this.getUsers()
+            const usersToDelete = users.map((u) => {
+                const date_connection = u.last_connection
+                const partes = date_connection.split(/[\s,\/:]+/)
+                const [dia, mes, anio, hora, minutos, segundos] = partes;
+                const fecha = new Date(anio, mes - 1, dia, hora, minutos, segundos);
+                const milisegundos = fecha.getTime();
+                if (milisegundos + 172800000 < actualTime) {
+                    return u._id
+                }
+            })
+            const deletedUsers = users.filter((u) => usersToDelete.includes(u._id))
+            console.log(deletedUsers)
+            if (deletedUsers.length > 0) {
+                deletedUsers.forEach(async (u) => {
+                    const gmailOptions = {
+                        from: config.EMAIL_HOST,
+                        to: 'lucaseramos13@gmail.com',
+                        subject: 'Cambio de contraseña',
+                        html: `<h1>Hola ${u.first_name}, su cuenta ha sido eliminado por inactividad</h1>`
+                    }
+                    await transporter.sendMail(gmailOptions)
+                })
+                const usersDeleted = await UserModel.deleteMany({ $or: deletedUsers })
+                return `${usersDeleted.deletedCount} users has been deleted`
+            }
+            else return 'undefined'
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -41,9 +87,7 @@ export default class UserManagerMongo {
             const userExist = await UserModel.findOne({ email });
             const userIsValidPassword = userExist && utils.isValidPassword(userExist, password)
             if (userIsValidPassword) {
-                const actualTime = new Date()
-                const connectionTime = actualTime.getHours() + ':' + actualTime.getMinutes() + ':' + actualTime.getSeconds()
-                userExist.last_connection = connectionTime
+                userExist.last_connection = new Date().toLocaleString()
                 userExist.save()
                 return userExist
             } else {

@@ -10,6 +10,16 @@ export const getUserByEmailService = async (email) => {
     return user
 }
 
+export const getUsersService = async () => {
+    const users = await userDao.getUsers();
+    return users
+}
+
+export const deleteDisconnectedUsersService = async () => {
+    const users = await userDao.deleteDisconnectedUsers()
+    return users
+}
+
 export const restorePasswordService = async (email, password) => {
     const user = await userDao.restorePassword(email, password)
     return user

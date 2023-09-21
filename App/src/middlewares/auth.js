@@ -3,18 +3,18 @@ const { userManager } = factory
 
 export const isUser = async (req, res, next) => {
     const user = await userManager.getUserById(req.session.passport.user)
-    if (user.role == 'user') next()
+    if (user.role === 'user') next()
     else res.status(401).json({ msg: 'your role is not correct' });
 }
 export const isAdmin = async (req, res, next) => {
     const user = await userManager.getUserById(req.session.passport.user)
-    if (user.role == 'admin') next()
+    if (user.role === 'admin') next()
     else res.status(401).json({ msg: 'your are not authorized ' });
 }
 
 export const isPremium = async (req, res, next) => {
     const user = await userManager.getUserById(req.session.passport.user)
-    if (user.role == 'premium' || user.role == 'admin') next()
+    if (user.role === 'premium' || user.role === 'admin') next()
     else res.status(401).json({ msg: 'your are not authorized ' });
 }
 
