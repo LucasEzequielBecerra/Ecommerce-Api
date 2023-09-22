@@ -38,7 +38,6 @@ app.use(
         },
         store: new mongoStore({
             mongoUrl: mongoStoreString.mongoStoreString,
-            // ttl: 30
         })
     })
 )
@@ -53,6 +52,8 @@ app.use('/api', apiRouter)
 app.listen(PORT, () => {
     logger.info(`Server ok en puerto: ${PORT}`);
 });
+
+export default app;
 
 
 

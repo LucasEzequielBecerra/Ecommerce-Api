@@ -3,11 +3,11 @@ import { HttpResponse } from '../utils/http.response.util.js';
 import { logger } from '../utils/logger.util.js';
 
 
-export const registerResponse = (req, res, next) => {
+export const registerResponse = async (req, res, next) => {
     try {
-        return HttpResponse.Ok(res, 'user registration successful')
+        res.send('ok')
     } catch (error) {
-        next(error.message);
+        console.log(error.message);
     }
 };
 
@@ -59,8 +59,9 @@ export const getUsersController = async (req, res, next) => {
 
 export const deleteDisconnectedUsersControler = async (req, res, next) => {
     try {
-        const users = await services.deleteDisconnectedUsersService()
-        res.json(users)
+        const response = await services.deleteDisconnectedUsersService()
+        if (response) return HttpResponse.Ok(res, response)
+        else return HttpResponse.NotFound(res, 'Users not found')
     } catch (error) {
         next(error.message)
     }
@@ -69,8 +70,9 @@ export const deleteDisconnectedUsersControler = async (req, res, next) => {
 export const restorePasswordController = async (req, res, next) => {
     try {
         const { email, password } = req.body
-        const user = await services.restorePasswordService(email, password)
-        res.json(user)
+        const response = await services.restorePasswordService(email, password)
+        if (response) return HttpResponse.Ok(res, response)
+        else return HttpResponse.NotFound(res, 'User not found')
     } catch (error) {
         next(error.message);
     }
@@ -84,8 +86,9 @@ export const uploadDocumentsController = async (req, res, next) => {
             name: file.originalname,
             reference: file.fieldname,
         }))
-        const upl = await services.uploadDocumentsService(uid, file)
-        res.json(upl)
+        const user = await services.uploadDocumentsService(uid, file)
+        if (user) return HttpResponse.Ok(res, user)
+        else return HttpResponse.NotFound(res, 'User not found')
     } catch (error) {
         next(error.message)
     }
@@ -94,9 +97,9 @@ export const uploadDocumentsController = async (req, res, next) => {
 export const changeRoleController = async (req, res, next) => {
     try {
         const { uid } = req.params
-        const user = await services.changeRoleService(uid)
-        if (user.role === 'admin') res.json({ message: 'this is admin, your role has not been changed' })
-        res.json({ message: 'your role has been changed' })
+        const response = await services.changeRoleService(uid)
+        if (response) return HttpResponse.Ok(res, response)
+        else return HttpResponse.NotFound(res, 'Users not found')
     } catch (error) {
         next(error.message);
     }

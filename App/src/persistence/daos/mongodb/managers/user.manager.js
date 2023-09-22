@@ -6,6 +6,26 @@ import config from '../../../../../config.js';
 
 export default class UserManagerMongo {
 
+    async getUserById(id) {
+        try {
+            const userExist = await UserModel.findById(id)
+            if (userExist) return userExist
+            else return false
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async getUserByEmail(email) {
+        try {
+            const user = await UserModel.findOne({ email })
+            if (user) return user
+            else return false
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
     async createUser(user) {
         try {
             const { email, password } = user;
@@ -15,21 +35,51 @@ export default class UserManagerMongo {
                 const newUser = await UserModel.create({ ...user, password: utils.createHash(password), role: email === 'lucas@gmail.com' ? 'admin' : 'user', cartId: email === 'lucas@gmail.com' ? null : newCart });
                 return newUser
             } else {
-                console.log('nashe')
-                return null;
+                return false;
             }
         } catch (error) {
-            console.log(error)
-            throw new Error(error)
+            throw new Error(error.message)
+        }
+    }
+
+    async loginUser(user) {
+        try {
+            const { email, password } = user;
+            const userExist = await UserModel.findOne({ email });
+            const userIsValidPassword = userExist && utils.isValidPassword(userExist, password)
+            if (userIsValidPassword) {
+                userExist.last_connection = new Date().toLocaleString()
+                userExist.save()
+                return userExist
+            } else {
+                return false
+            }
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async logoutUser(user) {
+        try {
+            const userExist = await UserModel.findById(user)
+            if (userExist) {
+                const actualTime = new Date()
+                const connectionTime = actualTime.getHours() + ':' + actualTime.getMinutes() + ':' + actualTime.getSeconds()
+                userExist.last_connection = connectionTime
+                userExist.save()
+            } else return false
+        } catch (error) {
+            throw new Error(error.message)
         }
     }
 
     async getUsers() {
         try {
             const users = await UserModel.find({})
-            return users
+            if (users.length > 0) return false
+            else return false
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
@@ -48,7 +98,6 @@ export default class UserManagerMongo {
                 }
             })
             const deletedUsers = users.filter((u) => usersToDelete.includes(u._id))
-            console.log(deletedUsers)
             if (deletedUsers.length > 0) {
                 deletedUsers.forEach(async (u) => {
                     const gmailOptions = {
@@ -62,106 +111,59 @@ export default class UserManagerMongo {
                 const usersDeleted = await UserModel.deleteMany({ $or: deletedUsers })
                 return `${usersDeleted.deletedCount} users has been deleted`
             }
-            else return 'undefined'
+            else return false
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
     async restorePassword(email, password) {
         try {
             const user = await UserModel.findOne({ email })
-            if (user.password === password) throw new Error('the password has already been')
-            user.password = utils.createHash(password)
-            user.save()
-            return user
+            if (user) {
+                if (user.password === password) return 'That password has been used'
+                else {
+                    user.password = utils.createHash(password)
+                    user.save()
+                }
+                return 'password has been updated'
+            } else return false
         } catch (error) {
-            console.log(error)
-        }
-    }
-
-
-    async loginUser(user) {
-        try {
-            const { email, password } = user;
-            const userExist = await UserModel.findOne({ email });
-            const userIsValidPassword = userExist && utils.isValidPassword(userExist, password)
-            if (userIsValidPassword) {
-                userExist.last_connection = new Date().toLocaleString()
-                userExist.save()
-                return userExist
-            } else {
-                return null
-            }
-        } catch (error) {
-            console.log(error)
-            throw new Error(error)
-        }
-    }
-
-    async getUserByEmail(email) {
-        try {
-            const user = await UserModel.findOne({ email })
-            if (!user) return false
-            else return user
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async getUserById(id) {
-        try {
-            const userExist = await UserModel.findById(id)
-            if (userExist) return userExist
-            else return false
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async changeRole(uid) {
-        try {
-            const user = await UserModel.findById(uid)
-            if (!user) throw new Error(`User ${uid} does not exist`)
-            const documents = user.documents.map((doc) => doc.reference)
-            console.log(documents)
-            const docOk = documents.includes('identificacion')
-                && documents.includes('comprobante de domicilio')
-                && documents.includes('comprobante de estado de cuenta')
-            if (user.role === 'user' && docOk) {
-                user.role = 'premium'
-            }
-            else if (!docOk) throw new Error('the all files are not charged ')
-            else if (user.role === 'premium') user.role = 'user'
-            user.save()
-            return user
-        } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
     async uploadDocuments(uid, file) {
         try {
             const user = await UserModel.findById(uid)
-            if (!user) throw new Error(`User ${uid} does not exist`)
-            console.log(file)
-            user.documents.push(...file)
-            user.save()
-            return user
+            if (user) {
+                user.documents.push(...file)
+                user.save()
+                return user
+            } else return false
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
-    async logoutUser(user) {
+    async changeRole(uid) {
         try {
-            const userExist = await UserModel.findById(user)
-            const actualTime = new Date()
-            const connectionTime = actualTime.getHours() + ':' + actualTime.getMinutes() + ':' + actualTime.getSeconds()
-            userExist.last_connection = connectionTime
-            userExist.save()
+            const user = await UserModel.findById(uid)
+            if (user) {
+                const documents = user.documents.map((doc) => doc.reference)
+                const docOk = documents.includes('identificacion')
+                    && documents.includes('comprobante de domicilio')
+                    && documents.includes('comprobante de estado de cuenta')
+                if (user.role === 'user' && docOk) {
+                    user.role = 'premium'
+                }
+                else if (!docOk) return 'the all files are not charged'
+                else if (user.role === 'premium') user.role = 'user'
+                user.save()
+                return 'your role has been changed'
+            } else return false
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 }

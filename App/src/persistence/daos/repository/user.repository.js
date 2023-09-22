@@ -11,7 +11,7 @@ export default class UserRepository {
             const userDTO = new UserResponseDTO(user)
             return userDTO
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
     async getUserByEmail(email) {
@@ -21,35 +21,7 @@ export default class UserRepository {
             const userDTO = new UserResponseDTO(user)
             return userDTO
         } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async getUsers() {
-        try {
-            const users = await userManager.getUsers()
-            return users
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async deleteDisconnectedUsers() {
-        try {
-            const users = await userManager.deleteDisconnectedUsers()
-            return users
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async loginUser(user) {
-        try {
-            const userExist = await userManager.loginUser(user)
-            return userExist
-        } catch (error) {
-            console.log(error)
-            throw new Error(error)
+            throw new Error(error.message)
         }
     }
 
@@ -58,26 +30,52 @@ export default class UserRepository {
             const newUser = await userManager.createUser(user)
             return newUser
         } catch (error) {
-            console.log(error)
-            throw new Error(error)
+            throw new Error(error.message)
         }
     }
+
+    async loginUser(user) {
+        try {
+            const userExist = await userManager.loginUser(user)
+            return userExist
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async logoutUser(user) {
+        try {
+            await userManager.logoutUser(user)
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async getUsers() {
+        try {
+            const users = await userManager.getUsers()
+            return users
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
+    async deleteDisconnectedUsers() {
+        try {
+            const res = await userManager.deleteDisconnectedUsers()
+            return res
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
 
     async restorePassword(email, password) {
         try {
             const user = await userManager.restorePassword(email, password)
             return user
         } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async changeRole(uid) {
-        try {
-            const user = await userManager.changeRole(uid)
-            return user
-        } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
@@ -86,15 +84,16 @@ export default class UserRepository {
             const user = await userManager.uploadDocuments(uid, file)
             return user
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
-    async logoutUser(user) {
+    async changeRole(uid) {
         try {
-            await userManager.logoutUser(user)
+            const user = await userManager.changeRole(uid)
+            return user
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 }
