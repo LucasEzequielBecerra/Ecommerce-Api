@@ -12,6 +12,16 @@ const user = {
     password: "1234"
 }
 
+const createUsersMock = async () => {
+    let cant = 50
+    let usersArray = []
+    for (let i = 0; i < cant; i++) {
+        const user = generateUser();
+        usersArray.push(user);
+    }
+    return usersArray
+};
+
 
 const apiURL = 'http://localhost:8080/api/';
 // console.log(apiURL + 'products')

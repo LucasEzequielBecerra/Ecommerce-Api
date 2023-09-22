@@ -36,7 +36,7 @@ export default class ProductRepository {
     async deleteProdById(pid, user) {
         try {
             const res = await productManager.deleteProdById(pid, user)
-            console.log(res, 'xd')
+            console.log(res, 'xd en repository')
             return res
         } catch (error) {
             console.log(error)

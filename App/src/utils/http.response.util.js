@@ -7,42 +7,42 @@ const HttpStatus = {
 };
 
 export class HttpResponse {
-    Ok(res, data) {
+    Ok(res, data, message) {
         return res.status(HttpStatus.OK).json({
             status: HttpStatus.OK,
-            message: 'Success',
+            message: message || 'Success',
             data: data
         });
     };
 
-    NotFound(res, data) {
+    NotFound(res, data, message) {
         return res.status(HttpStatus.NOT_FOUND).json({
             status: HttpStatus.NOT_FOUND,
-            message: 'Not Found',
+            message: message || 'Not Found',
             error: data
         });
     };
 
-    Unauthorized(res, data) {
+    Unauthorized(res, data, message) {
         return res.status(HttpStatus.UNAUTHORIZED).json({
             status: HttpStatus.UNAUTHORIZED,
-            message: 'Unauthorized',
+            message: message || 'Unauthorized',
             error: data
         });
     };
 
-    Forbidden(res, data) {
+    Forbidden(res, data, message) {
         return res.status(HttpStatus.FORBIDDEN).json({
             status: HttpStatus.FORBIDDEN,
-            message: 'Forbidden',
+            message: message || 'Forbidden',
             error: data
         });
     };
 
-    ServerError(res, data) {
+    ServerError(res, data, message) {
         return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
             status: HttpStatus.INTERNAL_SERVER_ERROR,
-            message: 'Internal Server Error',
+            message: message || 'Internal Server Error',
             error: data
         });
     };

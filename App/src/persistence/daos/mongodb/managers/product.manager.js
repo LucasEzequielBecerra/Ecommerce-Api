@@ -1,3 +1,5 @@
+import config from "../../../../../config.js";
+import { transporter } from "../../../../services/email.service.js";
 import { ProductModel } from "../models/product.model.js";
 import mongoose from "mongoose";
 
@@ -37,11 +39,18 @@ export default class ProductManagerMongo {
         try {
             const { email, role } = user
             const prod = await this.getProdById(pid)
-            console.log(prod)
             if (!prod) return false
             const objectId = new mongoose.Types.ObjectId(pid)
             if (prod.owner !== email && role !== 'admin') throw new Error('you dont have permission')
-            await ProductModel.deleteOne({ _id: objectId })
+            const gmailOptions = {
+                from: config.EMAIL_HOST,
+                to: 'lucaseramos13@gmail.com', //seria el email que esta en prod.owner
+                subject: 'Your product has been deleted',
+                html: `<h1>Hello ${user.first_name}, your prod ${prod.description} ${prod.name} with id ${prod._id} has been deleted</h1>`
+            }
+            await transporter.sendMail(gmailOptions)
+            const res = await ProductModel.deleteOne({ _id: objectId })
+            return `${res.deletedCount} product deleted successfully`
         } catch (error) {
             console.log(error)
         }

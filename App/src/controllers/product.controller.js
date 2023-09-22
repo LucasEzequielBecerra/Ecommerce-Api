@@ -63,7 +63,7 @@ export const deleteByIdController = async (req, res, next) => {
         const user = await userManager.getUserById(req.session.passport.user)
         const { pid } = req.params;
         const response = await service.deleteByIdService(pid, user)
-        console.log(response)
+        console.log(response, 'controller error')
         if (response === false) res.json({ message: 'the prod has not exist' })
         else res.json({ message: 'Product deleted successfully!' })
     } catch (error) {
