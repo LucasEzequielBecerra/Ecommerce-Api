@@ -37,7 +37,9 @@ export default class UserRepository {
     async loginUser(user) {
         try {
             const userExist = await userManager.loginUser(user)
-            return userExist
+            console.log(userExist)
+            if (!userExist) return false
+            else return userExist
         } catch (error) {
             throw new Error(error.message)
         }

@@ -8,21 +8,12 @@ import mongoose from "mongoose";
 
 export default class ProductManagerMongo {
 
-    async createProd(obj) {
-        try {
-            const res = await ProductModel.create(obj)
-            return res
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     async getAllProds(page = 1, limit = 10) {
         try {
             const res = await ProductModel.paginate({}, { page, limit })
             return res
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
@@ -31,7 +22,16 @@ export default class ProductManagerMongo {
             const res = await ProductModel.findById(pid)
             return res
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
+        }
+    }
+
+    async createProd(obj) {
+        try {
+            const res = await ProductModel.create(obj)
+            return res
+        } catch (error) {
+            throw new Error(error.message)
         }
     }
 
@@ -52,15 +52,16 @@ export default class ProductManagerMongo {
             const res = await ProductModel.deleteOne({ _id: objectId })
             return `${res.deletedCount} product deleted successfully`
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
     async deleteAllProducts() {
         try {
-            await ProductModel.deleteMany()
+            const response = await ProductModel.deleteMany()
+            return response
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 

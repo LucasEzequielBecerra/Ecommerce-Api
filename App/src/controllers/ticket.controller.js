@@ -4,27 +4,26 @@ import { HttpResponse } from '../utils/http.response.util.js'
 import { logger } from '../utils/logger.util.js'
 const httpResponse = new HttpResponse()
 
-export const getAllTicketsController = async (req, res, next) => {
-    try {
-        const tickets = await services.getAllTicketsService()
-        // if (!tickets) return httpResponse.NotFound(res, "tickets not authorized")
-        res.json(tickets)
-    } catch (error) {
-        next(error)
-        logger.error('controller error: ')
-    }
-}
-
 export const createTicketsController = async (req, res, next) => {
     try {
         const { cid } = req.params
-        const uid = req.session.passport.user
+        const uid = req.session.passport?.user
         const newTicket = await services.createTicketService(uid)
-        if (!newTicket) return httpResponse.NotFound(res, "ticket not exists")
-        await purchaseProductsService(cid)
-        res.json(newTicket)
+        if (newTicket) {
+            await purchaseProductsService(cid)
+            return httpResponse.Ok(res, newTicket, "Your purchase has been completed")
+        }
+        else return httpResponse.NotFound(res, 'The purchase has not been completed')
     } catch (error) {
-        next(error)
-        logger.error('controller error: ')
+        next(error.message)
+    }
+}
+export const getAllTicketsController = async (req, res, next) => {
+    try {
+        const tickets = await services.getAllTicketsService()
+        if (tickets) return httpResponse.Ok(res, "Tickets founded")
+        else return httpResponse.NotFound(res, 'Tickets not found')
+    } catch (error) {
+        next(error.message)
     }
 }

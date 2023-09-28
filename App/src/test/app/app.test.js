@@ -1,42 +1,51 @@
-import chai from 'chai';
-import supertest from 'supertest';
+import { expect } from 'chai';
+import request from 'supertest';
 import mongoose from 'mongoose';
+import app from '../../server'
 import { fakerES as faker } from "@faker-js/faker";
 
-const requester = supertest('localhost:8080')
+
+
+
 
 const user = {
     first_name: faker.person.firstName(),
     last_name: faker.person.lastName(),
     email: faker.internet.email(),
     age: faker.number.int({ min: 18, max: 80 }),
-    password: 1234,
+    password: '1234',
 };
+console.log('este es el mail de faker ---->', user.email)
 
 const userReal = {
-    email: 'lucas@gmail.com',
-    password: '1234'
+    email: "lucas132@gmail.com",
+    password: "1234"
 }
 
-console.log('nice')
 
-describe('Tests integrales de app E-commerce', () => {
+describe('Tests de app E-commerce', () => {
 
-    it('[POST] /api/users/register', async () => {
-        const response = await requester.post('/api/users/register').send(user)
+    beforeEach(async () => {
+        mongoose.connection.collections['users']
+    })
 
+    test('[POST] /api/users/register', async () => {
+        let response = await request(app).post('/api/users/register').send(user)
+        response = response.body
+        expect(response).to.be.property('status')
         console.log(response)
-        //     const id = response.body._id;
-        //     const statusCode = response.statusCode
+    })
+    //     const id = response.body._id;
+    //     const statusCode = response.statusCode
 
-        //     expect(id).toBeDefined();
-        //     // expect(response.body).toHaveProperty('_id');
-        //     expect(statusCode).not.toBe(404);
-        //     expect(statusCode).toBe(200);
-        // })
+    //     expect(id).toBeDefined();
+    //     // expect(response.body).toHaveProperty('_id');
+    //     expect(statusCode).not.toBe(404);
+    //     expect(statusCode).toBe(200);
+    // })
 
-        // test('[POST] /api/users/login', async () => {
-        //     const response = (await request(app).post('/api/users/login')).send(userReal)
-        //     console.log(response)
+    test('[POST] /api/users/login', async () => {
+        const response = await request(app).post('/api/users/login').send(userReal)
+        console.log(response)
     })
 })

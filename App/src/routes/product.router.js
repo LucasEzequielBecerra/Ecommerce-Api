@@ -1,14 +1,16 @@
 import { Router } from 'express'
-import * as controller from '../controllers/product.controller.js'
+import * as controllers from '../controllers/product.controller.js'
 import { isPremium } from '../middlewares/auth.js';
 
 const router = Router();
 
-router.post('/', isPremium, controller.addProductController)
-router.get('/', controller.getAllProductsController);
-router.get('/:pid', controller.getByIdController);
-router.delete('/:pid', isPremium, controller.deleteByIdController);
+router.get('/', controllers.getAllProductsController);
+router.get('/:pid', controllers.getByIdController);
+
+router.post('/', isPremium, controllers.addProductController)
+router.delete('/:pid', isPremium, controllers.deleteByIdController);
+
+router.delete('/', controllers.deleteAllController);
 // router.put('/:pid', updateController);
-router.delete('/', controller.deleteAllController);
 
 export default router;

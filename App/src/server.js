@@ -37,7 +37,7 @@ app.use(
             maxAge: 1000000
         },
         store: new mongoStore({
-            mongoUrl: mongoStoreString.mongoStoreString,
+            mongoUrl: 'mongodb+srv://Becerra:Lucasbecerra.1@cluster0.2eff3zo.mongodb.net/Test?retryWrites=true&w=majority',
         })
     })
 )

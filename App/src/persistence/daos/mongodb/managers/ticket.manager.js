@@ -10,7 +10,7 @@ export default class TicketManagerMongo {
             const tickets = await TicketModel.find({})
             return tickets
         } catch (error) {
-            console.log(error.message)
+            throw new Error(error.message)
         }
     }
 
@@ -31,7 +31,7 @@ export default class TicketManagerMongo {
             return newTicket
 
         } catch (error) {
-            console.log(error)
+            throw new Error(error)
         }
     }
 

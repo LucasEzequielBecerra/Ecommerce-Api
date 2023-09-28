@@ -10,7 +10,16 @@ export default class CartManagerMongo {
             const cart = await CartModel.create({})
             return cart
         } catch (error) {
-            console.log(error)
+            throw new Error(error)
+        }
+    }
+
+    async getCartById(cartId) {
+        try {
+            const res = await CartModel.findOne({ _id: cartId })
+            return res
+        } catch (error) {
+            throw new Error(error)
         }
     }
 
@@ -52,30 +61,6 @@ export default class CartManagerMongo {
         }
     }
 
-    async purchaseProducts(cid) {
-        try {
-            const cartFind = await CartModel.findById(cid)
-            if (cartFind.products.length === 0) throw new Error('Cart not have any products')
-            cartFind.products.map(async (product) => {
-                const { pid } = product
-                const { quantity } = product
-                const prodFindInDB = await ProductModel.findById(pid)
-                if (prodFindInDB.stock >= quantity) {
-                    prodFindInDB.stock -= quantity
-                    prodFindInDB.save()
-                } else throw new Error('The product in cart is not stock available or not existing')
-            })
-            cartFind.total = 0
-            cartFind.products = []
-            cartFind.save()
-            const cartUpdated = await CartModel.findById(cid)
-            return cartUpdated
-        }
-        catch (error) {
-            console.log(error.message)
-        }
-    }
-
     async deleteProductToCart(cid, pid, quantity) {
         try {
             const cart = await CartModel.findById(cid)
@@ -99,7 +84,7 @@ export default class CartManagerMongo {
             return cart
 
         } catch (error) {
-            console.log(error.message)
+            throw new Error(error.message)
         }
     }
 
@@ -111,16 +96,31 @@ export default class CartManagerMongo {
             await cart.save()
             return cart
         } catch (error) {
-            console.log(error)
+            throw new Error(error)
         }
     }
 
-    async getCartById(cartId) {
+    async purchaseProducts(cid) {
         try {
-            const res = await CartModel.findOne({ _id: cartId })
-            return res
-        } catch (error) {
-            console.log(error)
+            const cartFind = await CartModel.findById(cid)
+            if (cartFind.products.length === 0) throw new Error('Cart not have any products')
+            cartFind.products.map(async (product) => {
+                const { pid } = product
+                const { quantity } = product
+                const prodFindInDB = await ProductModel.findById(pid)
+                if (prodFindInDB.stock >= quantity) {
+                    prodFindInDB.stock -= quantity
+                    prodFindInDB.save()
+                } else throw new Error('The product in cart is not stock available or not existing')
+            })
+            cartFind.total = 0
+            cartFind.products = []
+            cartFind.save()
+            const cartUpdated = await CartModel.findById(cid)
+            return cartUpdated
+        }
+        catch (error) {
+            throw new Error(error.message)
         }
     }
 }

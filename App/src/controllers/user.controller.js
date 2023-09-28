@@ -1,21 +1,22 @@
 import * as services from '../services/user.service.js'
 import { HttpResponse } from '../utils/http.response.util.js';
+const httpResponse = new HttpResponse()
 import { logger } from '../utils/logger.util.js';
 
 
 export const registerResponse = async (req, res, next) => {
     try {
-        res.send('ok')
+        return httpResponse.Ok(res, 'Register ok')
     } catch (error) {
-        console.log(error.message);
+        next(error.message);
     }
 };
 
 export const loginResponse = async (req, res, next) => {
     try {
         const user = await services.getUserByIdService(req.session.passport?.user);
-        if (user) return HttpResponse.Ok(res, user, `Welcome ${user.name}`)
-        else return HttpResponse.NotFound(res, 'User not found')
+        if (user) return httpResponse.Ok(res, user, `Welcome ${user.name}`)
+        else return httpResponse.NotFound(res, 'User not found')
     } catch (error) {
         next(error.message);
     }
@@ -24,8 +25,8 @@ export const loginResponse = async (req, res, next) => {
 export const githubResponse = async (req, res, next) => {
     try {
         const user = await services.getUserByIdService(req.user._id)
-        if (user) return HttpResponse.Ok(res, user, `Welcome ${user.name}`)
-        else return HttpResponse.NotFound(res, 'User not found')
+        if (user) return httpResponse.Ok(res, user, `Welcome ${user.name}`)
+        else return httpResponse.NotFound(res, 'User not found')
     } catch (error) {
         next(error.message);
     }
@@ -37,11 +38,11 @@ export const logoutUserController = async (req, res, next) => {
         if (user) {
             await services.logoutUserService(req.session.passport.user)
             req.session.destroy((err) => {
-                if (!err) return HttpResponse.Ok(res, user)
-                else return HttpResponse.ServerError(res, 'Error logging out')
+                if (!err) return httpResponse.Ok(res, user)
+                else return httpResponse.ServerError(res, 'Error logging out')
             });
         }
-        else return HttpResponse.NotFound(res, 'User not found')
+        else return httpResponse.NotFound(res, 'User not found')
     } catch (error) {
         next(error.message)
     }
@@ -50,8 +51,8 @@ export const logoutUserController = async (req, res, next) => {
 export const getUsersController = async (req, res, next) => {
     try {
         const users = await services.getUsersService()
-        if (users) return HttpResponse.Ok(res, users)
-        else return HttpResponse.NotFound(res, 'Users not found')
+        if (users) return httpResponse.Ok(res, users)
+        else return httpResponse.NotFound(res, 'Users not found')
     } catch (error) {
         next(error.message);
     }
@@ -60,8 +61,8 @@ export const getUsersController = async (req, res, next) => {
 export const deleteDisconnectedUsersControler = async (req, res, next) => {
     try {
         const response = await services.deleteDisconnectedUsersService()
-        if (response) return HttpResponse.Ok(res, response)
-        else return HttpResponse.NotFound(res, 'Users not found')
+        if (response) return httpResponse.Ok(res, response)
+        else return httpResponse.NotFound(res, 'Users not found')
     } catch (error) {
         next(error.message)
     }
@@ -71,8 +72,8 @@ export const restorePasswordController = async (req, res, next) => {
     try {
         const { email, password } = req.body
         const response = await services.restorePasswordService(email, password)
-        if (response) return HttpResponse.Ok(res, response)
-        else return HttpResponse.NotFound(res, 'User not found')
+        if (response) return httpResponse.Ok(res, response)
+        else return httpResponse.NotFound(res, 'User not found')
     } catch (error) {
         next(error.message);
     }
@@ -87,8 +88,8 @@ export const uploadDocumentsController = async (req, res, next) => {
             reference: file.fieldname,
         }))
         const user = await services.uploadDocumentsService(uid, file)
-        if (user) return HttpResponse.Ok(res, user)
-        else return HttpResponse.NotFound(res, 'User not found')
+        if (user) return httpResponse.Ok(res, user)
+        else return httpResponse.NotFound(res, 'User not found')
     } catch (error) {
         next(error.message)
     }
@@ -98,8 +99,8 @@ export const changeRoleController = async (req, res, next) => {
     try {
         const { uid } = req.params
         const response = await services.changeRoleService(uid)
-        if (response) return HttpResponse.Ok(res, response)
-        else return HttpResponse.NotFound(res, 'Users not found')
+        if (response) return httpResponse.Ok(res, response)
+        else return httpResponse.NotFound(res, 'Users not found')
     } catch (error) {
         next(error.message);
     }

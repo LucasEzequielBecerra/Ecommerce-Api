@@ -1,29 +1,16 @@
 import factory from '../persistence/factory.js'
 const { userManager } = factory
-import * as service from '../services/product.service.js'
+import * as services from '../services/product.service.js'
 import { HttpResponse } from '../utils/http.response.util.js'
 import { logger } from '../utils/logger.util.js'
 const httpResponse = new HttpResponse()
 
-export const addProductController = async (req, res, next) => {
-    try {
-        const { email, role } = await userManager.getUserById(req.session.passport.user)
-        const prod = { ...req.body, owner: role === 'admin' ? role : email }
-        console.log(prod)
-        const newProd = await service.addProductService(prod)
-        console.log(newProd)
-        if (!newProd) res.json({ message: 'Product already exists' })
-        else res.json(newProd)
-    } catch (error) {
-        next(error)
-        logger.error('controller error: ')
-    }
-}
+
 
 export const getAllProductsController = async (req, res, next) => {
     try {
         const { page, limit } = req.query;
-        const response = await service.getAllProductsService(page, limit)
+        const response = await services.getAllProductsService(page, limit)
         if (!response) return httpResponse.NotFound(res, "products not found")
         const next = response.hasNextPage ? `http://localhost:8080/api/products?page=${response.nextPage}` : null
         const prev = response.hasPrevPage ? `http://localhost:8080/api/products?page=${response.prevPage}` : null
@@ -39,22 +26,32 @@ export const getAllProductsController = async (req, res, next) => {
             prevLink: prev,
             nextLink: next
         })
-        res.json({ ...productsFile })
+        return httpResponse.Ok(res, productsFile, 'All products found')
     } catch (error) {
-        next(error)
-        logger.error('controller error: ')
+        next(error.message)
     }
 }
 
 export const getByIdController = async (req, res, next) => {
     try {
         const { pid } = req.params
-        const doc = await service.getByIdService(pid)
-        if (!doc) res.json({ message: 'product not found' })
-        res.json(doc)
+        const doc = await services.getByIdService(pid)
+        if (!doc) httpResponse.NotFound(res, `The product whit id ${pid} not found`)
+        else return httpResponse.Ok(res, doc, 'Product found')
     } catch (error) {
-        logger.error('controller error: ')
-        next(error)
+        next(error.message)
+    }
+}
+
+export const addProductController = async (req, res, next) => {
+    try {
+        const { email, role } = await userManager.getUserById(req.session.passport.user)
+        const prod = { ...req.body, owner: role === 'admin' ? role : email }
+        const newProd = await services.addProductService(prod)
+        if (newProd) httpResponse.Ok(res, newProd, 'Product added successfully')
+        else httpResponse.NotFound(res, 'Product has not been added successfully')
+    } catch (error) {
+        next(error.message)
     }
 }
 
@@ -62,15 +59,24 @@ export const deleteByIdController = async (req, res, next) => {
     try {
         const user = await userManager.getUserById(req.session.passport.user)
         const { pid } = req.params;
-        const response = await service.deleteByIdService(pid, user)
-        console.log(response, 'controller error')
-        if (response === false) res.json({ message: 'the prod has not exist' })
-        else res.json({ message: 'Product deleted successfully!' })
+        const response = await services.deleteByIdService(pid, user)
+        if (response) httpResponse.Ok(res, response, 'Product deleted successfully!')
+        else httpResponse.Forbidden(res, 'The product has not been deleted')
     } catch (error) {
-        logger.error('controller error:' + error.message)
-        next(error);
+        next(error.message);
     }
 };
+
+export const deleteAllController = async (req, res, next) => {
+    try {
+        const response = await services.deleteAllService()
+        if (response) return httpResponse.Ok(res, 'Products deleted successfully')
+        else return httpResponse.NotFound(res, 'Products has not deleted')
+    } catch (error) {
+        next(error.message)
+    }
+}
+
 
 // export const updateController = async (req, res, next) => {
 //     try {
@@ -83,17 +89,6 @@ export const deleteByIdController = async (req, res, next) => {
 //         res.json(docUpd);
 //     } catch (error) {
 // logger.error('controller error: ')
-//         next(error);
+//         next(error.message);
 //     }
 // };
-
-
-export const deleteAllController = async (req, res, next) => {
-    try {
-        await service.deleteAllService()
-        res.json({ message: 'Products deleted successfully' })
-    } catch (error) {
-        logger.error('controller error: ')
-        next(error)
-    }
-}

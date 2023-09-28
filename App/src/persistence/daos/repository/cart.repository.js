@@ -3,14 +3,21 @@ const { cartManager } = factory
 
 export default class CartRepository {
 
-
     async createCart() {
         try {
             const newCart = await cartManager.createCart();
-            if (!newCart) throw new Error('Cart already exists')
-            else return newCart
+            return newCart
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
+        }
+    }
+
+    async getCartById(cartId) {
+        try {
+            const doc = await cartManager.getCartById(cartId)
+            return doc
+        } catch (error) {
+            throw new Error(error.message)
         }
     }
 
@@ -28,7 +35,7 @@ export default class CartRepository {
             const newCart = await cartManager.deleteProductToCart(cid, pid, quantity);
             return newCart
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
@@ -37,41 +44,16 @@ export default class CartRepository {
             const newCart = await cartManager.deleteAllProductsToCart(cid)
             return newCart
         } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async getCartById(cartId) {
-        try {
-            const doc = await cartManager.getCartById(cartId)
-            if (!doc) throw new Error('Cart not found')
-            return doc
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async getAllCarts() {
-        try {
-            const docs = await cartManager.getCarts()
-            if (!docs) throw new Error('carts not found')
-            else return docs
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async deleteCart(id) {
-        try {
-            const cartDeleted = await cartManager.deleteCart(id)
-            return cartDeleted
-        } catch (error) {
-            console.log(error);
+            throw new Error(error.message)
         }
     }
 
     async purchaseProducts(cid) {
-        const products = await cartManager.purchaseProducts(cid)
-        return products
+        try {
+            const products = await cartManager.purchaseProducts(cid)
+            return products
+        } catch (error) {
+            throw new Error(error.message)
+        }
     }
 }

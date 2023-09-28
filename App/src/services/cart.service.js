@@ -4,10 +4,18 @@ const cartDaoMongo = new CartRepository()
 export const createCartService = async () => {
     try {
         const newCart = await cartDaoMongo.createCart()
-        if (!newCart) throw new Error('Cart already exists')
-        else return newCart
+        return newCart
     } catch (error) {
-        console.log(error)
+        throw new Error(error.message)
+    }
+}
+
+export const getCartByIdService = async (cartId) => {
+    try {
+        const doc = await cartDaoMongo.getCartById(cartId)
+        return doc
+    } catch (error) {
+        throw new Error(error.message)
     }
 }
 
@@ -25,7 +33,7 @@ export const deleteProductToCartService = async (cid, pid, quantity) => {
         const newCart = await cartDaoMongo.deleteProductToCart(cid, pid, quantity)
         return newCart
     } catch (error) {
-        console.log(error)
+        throw new Error(error.message)
     }
 }
 
@@ -34,45 +42,15 @@ export const deleteAllProductsToCartService = async (cid) => {
         const newCart = await cartDaoMongo.deleteAllProductsToCart(cid)
         return newCart
     } catch (error) {
-        console.log(error)
-    }
-}
-
-export const getCartByIdService = async (cartId) => {
-    try {
-        const doc = await cartDaoMongo.getCartById(cartId)
-        if (!doc) throw new Error('Cart not found')
-        return doc
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export const getAllCarts = async () => {
-    try {
-        const docs = await cartDaoMongo.getCarts()
-        if (!docs) throw new Error('carts not found')
-        else return docs
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-export const deleteCartService = async (id) => {
-    try {
-        const cartDeleted = await cartDaoMongo.deleteCart(id)
-        return cartDeleted
-    } catch (error) {
-        console.log(error);
+        throw new Error(error.message)
     }
 }
 
 export const purchaseProductsService = async (cid) => {
     try {
         const products = await cartDaoMongo.purchaseProducts(cid)
-        if (!products) throw new Error('products not found')
         return products
     } catch (error) {
-
+        throw new Error(error.message)
     }
 }

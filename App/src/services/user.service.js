@@ -5,7 +5,6 @@ export const getUserByIdService = async (id) => {
     try {
         const user = await userDao.getUserById(id)
         return user
-
     } catch (error) {
         throw new Error(error.message)
     }

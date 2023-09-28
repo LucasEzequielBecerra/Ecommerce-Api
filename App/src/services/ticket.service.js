@@ -6,7 +6,7 @@ export const getAllTicketsService = async () => {
         const tickets = await ticketDao.getAllTickets()
         return tickets
     } catch (error) {
-        console.log(error.message)
+        throw new Error(error.message)
     }
 }
 export const createTicketService = async (uid) => {
@@ -14,6 +14,6 @@ export const createTicketService = async (uid) => {
         const newTicket = await ticketDao.createTicket(uid)
         return newTicket
     } catch (error) {
-        console.log(error.message)
+        throw new Error(error.message)
     }
 }

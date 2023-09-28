@@ -4,6 +4,15 @@ import ProductResponseDTO from "../../dtos/product/product.response.dto.js";
 
 export default class ProductRepository {
 
+    async getAllProds(page, limit) {
+        try {
+            const res = await productManager.getAllProds(page, limit)
+            return res
+        } catch (error) {
+            throw new Error(error.message)
+        }
+    }
+
     async getProdById(pid) {
         try {
             const product = await productManager.getProdById(pid)
@@ -11,7 +20,7 @@ export default class ProductRepository {
             const prodDTO = new ProductResponseDTO(product)
             return prodDTO
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
@@ -20,34 +29,25 @@ export default class ProductRepository {
             const prod = await productManager.createProd(obj)
             return prod
         } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async getAllProds(page, limit) {
-        try {
-            const res = await productManager.getAllProds(page, limit)
-            return res
-        } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
     async deleteProdById(pid, user) {
         try {
             const res = await productManager.deleteProdById(pid, user)
-            console.log(res, 'xd en repository')
             return res
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 
     async deleteAllProducts() {
         try {
-            await productManager.deleteAllProducts()
+            const response = await productManager.deleteAllProducts()
+            return response
         } catch (error) {
-            console.log(error)
+            throw new Error(error.message)
         }
     }
 }
