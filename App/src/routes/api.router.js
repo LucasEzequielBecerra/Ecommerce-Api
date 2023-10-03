@@ -12,7 +12,7 @@ router.use('/carts', isLoggedIn, cartRouter);
 router.use('/users', userRouter);
 router.get('/loggerTest', (req, res) => {
     testLogger()
-    res.json({ message: 'mira la ' })
+    res.json({ message: 'look console' })
 })
 
 

@@ -2,7 +2,6 @@ import express from 'express';
 import { errorHandler } from './middlewares/errorHandler.js';
 import morgan from 'morgan'
 import config from '../config.js';
-import mongoStoreString from './persistence/factory.js'
 import { __dirname } from './utils.js';
 import mongoStore from 'connect-mongo'
 import cookieParser from 'cookie-parser'

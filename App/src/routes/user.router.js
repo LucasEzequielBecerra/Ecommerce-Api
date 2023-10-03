@@ -2,7 +2,6 @@ import { Router } from 'express'
 import * as controllers from '../controllers/user.controller.js'
 const router = new Router;
 import passport from 'passport';
-import { sendGmailController } from '../controllers/email.controller.js';
 import { uploader } from '../middlewares/multer.js';
 import { isLoggedIn } from "../middlewares/isLoggedIn.js";
 import { isAdmin } from "../middlewares/auth.js";
@@ -17,10 +16,10 @@ router.post('/logout', isLoggedIn, controllers.logoutUserController)
 
 
 router.get('/get-users', isAdmin, controllers.getUsersController)
-router.delete('/clear-users', isAdmin, controllers.deleteDisconnectedUsersControler)
+router.delete('/clear-users', isAdmin, controllers.deleteDisconnectedUsersController)
 
 
-router.post('/forgot-password', sendGmailController)
+router.post('/forgot-password', controllers.sendMailToRecoverPassword)
 router.post('/restore-password', controllers.restorePasswordController)
 router.post('/:uid/documents', uploader.any, isLoggedIn, controllers.uploadDocumentsController)
 router.post('/premium/:uid', isLoggedIn, controllers.changeRoleController)

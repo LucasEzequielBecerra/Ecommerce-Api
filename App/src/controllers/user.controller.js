@@ -1,4 +1,6 @@
 import * as services from '../services/user.service.js'
+import { transporter } from '../utils/email.util.js';
+import config from '../../config.js';
 import { HttpResponse } from '../utils/http.response.util.js';
 const httpResponse = new HttpResponse()
 import { logger } from '../utils/logger.util.js';
@@ -58,11 +60,29 @@ export const getUsersController = async (req, res, next) => {
     }
 }
 
-export const deleteDisconnectedUsersControler = async (req, res, next) => {
+export const deleteDisconnectedUsersController = async (req, res, next) => {
     try {
         const response = await services.deleteDisconnectedUsersService()
         if (response) return httpResponse.Ok(res, response)
         else return httpResponse.NotFound(res, 'Users not found')
+    } catch (error) {
+        next(error.message)
+    }
+}
+
+export const sendMailToRecoverPassword = async (req, res) => {
+    try {
+        const { email } = req.body
+        const user = await services.getUserByEmailService(email)
+        if (!user) res.json({ error: 'email not registered' })
+        const gmailOptions = {
+            from: config.EMAIL_HOST,
+            to: email,
+            subject: 'Cambio de contraseña',
+            html: `<h1>Hola ${user.name}, presione el siguiente link para recuperar su contraseña</h1>`
+        }
+        const response = await transporter.sendMail(gmailOptions)
+        res.json(response)
     } catch (error) {
         next(error.message)
     }

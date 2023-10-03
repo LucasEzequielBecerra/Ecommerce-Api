@@ -1,7 +1,7 @@
 import * as utils from '../../../../utils.js'
 import { UserModel } from '../models/user.model.js';
 import { CartModel } from '../models/cart.model.js';
-import { transporter } from '../../../../services/email.service.js';
+import { transporter } from '../../../../utils/email.util.js';
 import config from '../../../../../config.js';
 
 export default class UserManagerMongo {

@@ -1,5 +1,5 @@
 import config from "../../../../../config.js";
-import { transporter } from "../../../../services/email.service.js";
+import { transporter } from "../../../../utils/email.util.js";
 import { ProductModel } from "../models/product.model.js";
 import mongoose from "mongoose";
 
