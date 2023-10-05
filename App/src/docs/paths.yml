@@ -1,5 +1,238 @@
 paths:
-  /api/products/:
+  /api/users/register:
+    post:
+      tags: 
+      - Users
+      summary: Register a new user
+      requestBody:
+        content: 
+          application/json:
+            schema: 
+              $ref: '#/components/parameters/schemas/NewUserSchema'
+        required: true
+      responses:
+        200:
+          description: The user was registered successfully
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/UserRegistered'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  /api/users/login:
+    post:
+      tags: 
+      - Users
+      summary: Login user
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/parameters/schemas/LoginUserSchema'
+        required: true
+      responses:
+        200:
+          description: The user was logged in successfully
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/UserLogged'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  /api/users/register-github:
+    get:
+      tags: 
+      - Users
+      summary: Register a new user with github
+      responses:
+        200:
+          description: The user was registered successfully with github
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/UserRegisteredWithGithub'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  /api/users/logout:
+    post:
+      tags: 
+      - Users
+      summary: Logout session
+      responses:
+        200:
+          description: The user session was logged out
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/UserLoggedOut'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  /api/users/list:
+    get:
+      tags: 
+      - Users
+      summary: Get a users list
+      responses:
+        200:
+          description: List with all user obtained
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/UsersList'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  /api/users/clear-users:
+    delete:
+      tags: 
+      - Users
+      summary: Delete users inactive for more than two days
+      responses:
+        200:
+          description: The users with an inactivity of more than two days was deleted
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/UsersDeleted'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  /api/users/forgot-password:
+    post:
+      tags: 
+      - Users
+      summary: Send a mail for recover your password
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              type: object
+              required:
+              - email
+            properties:
+              email: 
+                type: string
+                description: email of the user
+            example:
+              email: ejohn@example.com
+        required: true
+      responses:
+        200:
+          description: Mail sent successfully
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/EmailSent'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  /api/users/restore-password:
+    post:
+      tags: 
+      - Users
+      summary: Change password
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/parameters/schemas/LoginUserSchema'
+        required: true
+      responses:
+        200:
+          description: Password changed successfully
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/PasswordChanged'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  /api/users/{uid}/documents:
+    post:
+      tags: 
+      - Users
+      summary: Upload documents
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          description: string id required
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/form-data:
+            schema: 
+              $ref: '#/components/parameters/schemas/DocumentSchema'
+        required: true
+      responses:
+        200:
+          description: Documents uploaded successfully
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/UploadDocs'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+  /api/users/premium/{uid}:
+    post:
+      tags: 
+      - Users
+      summary: Change role
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          description: string id required
+          schema:
+            type: string
+      responses:
+        200:
+          description: Your role change
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Users/RoleChanged'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+
+  /api/products:
     post:
       tags: 
       - Products
@@ -34,6 +267,23 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/Products/GetAllProducts'
+        404:
+          description: Error in the validation of the parameters
+          $ref: '#/components/schema/Products/ValidationSchemaError'
+        500:
+          description: Error on the server
+          $ref: '#/components/schema/Products/NotFound'
+    delete:
+      tags:
+      - Products
+      summary: Delete all products
+      responses:
+        200: 
+          description: Products found
+          content: 
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Products/DeleteAllProducts'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Products/ValidationSchemaError'

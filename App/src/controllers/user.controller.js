@@ -70,7 +70,7 @@ export const deleteDisconnectedUsersController = async (req, res, next) => {
     }
 }
 
-export const sendMailToRecoverPassword = async (req, res) => {
+export const sendMailToRecoverPassword = async (req, res, next) => {
     try {
         const { email } = req.body
         const user = await services.getUserByEmailService(email)
@@ -82,7 +82,7 @@ export const sendMailToRecoverPassword = async (req, res) => {
             html: `<h1>Hola ${user.name}, presione el siguiente link para recuperar su contraseña</h1>`
         }
         const response = await transporter.sendMail(gmailOptions)
-        res.json(response)
+        res.json({ msg: `El mail ha sido enviado correctamente a ${response.accepted}` })
     } catch (error) {
         next(error.message)
     }
@@ -101,6 +101,7 @@ export const restorePasswordController = async (req, res, next) => {
 
 export const uploadDocumentsController = async (req, res, next) => {
     try {
+        console.log('wats')
         const { uid } = req.params
         const file = req.files.map((file) =>
         ({
@@ -108,7 +109,7 @@ export const uploadDocumentsController = async (req, res, next) => {
             reference: file.fieldname,
         }))
         const user = await services.uploadDocumentsService(uid, file)
-        if (user) return httpResponse.Ok(res, user)
+        if (user) return httpResponse.Ok(res, user.documents)
         else return httpResponse.NotFound(res, 'User not found')
     } catch (error) {
         next(error.message)

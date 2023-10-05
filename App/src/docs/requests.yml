@@ -26,4 +26,60 @@ components:
           description: yerba
           price: 100
           stock: 10
-      
+      NewUserSchema:    
+        type: object
+        required: 
+          - first_name
+          - last_name
+          - email
+          - age
+          - password
+        properties:
+          first_name:
+            type: string
+            description: first name of the user
+          last_name:
+            type: string
+            description: last name of the user
+          email:
+            type: string
+            description: email of the user
+          age:
+            type: number
+            description: age of the user
+          password:
+            type: string
+            description: password of the user
+        example:
+          first_name: John
+          last_name: Doe
+          email: ejohn@example.com
+          age: 20
+          password: 1234abcd
+      LoginUserSchema:
+        type: object
+        required: 
+          - email
+          - password
+        properties:
+          email:
+            type: string
+            description: email of the user
+          password:
+            type: string
+            description: password of the user
+        example:
+          email: ejohn@example.com
+          password: 1234abcd
+      DocumentSchema:
+        type: object
+        properties:
+          reference:
+            type: string
+            description: name of the document referenced
+          document:
+            type: binary
+            description: name of the document
+        example:
+          reference: identificacion
+          document: imagen-identificacion.jpg

@@ -76,7 +76,7 @@ export default class UserManagerMongo {
     async getUsers() {
         try {
             const users = await UserModel.find({})
-            if (users.length > 0) return false
+            if (users.length > 0) return users
             else return false
         } catch (error) {
             throw new Error(error.message)
@@ -88,13 +88,16 @@ export default class UserManagerMongo {
             const actualTime = new Date().getTime()
             const users = await this.getUsers()
             const usersToDelete = users.map((u) => {
-                const date_connection = u.last_connection
-                const partes = date_connection.split(/[\s,\/:]+/)
-                const [dia, mes, anio, hora, minutos, segundos] = partes;
-                const fecha = new Date(anio, mes - 1, dia, hora, minutos, segundos);
-                const milisegundos = fecha.getTime();
-                if (milisegundos + 172800000 < actualTime) {
-                    return u._id
+                const date_connection = u.last_connection ? u.last_connection : false
+                if (!date_connection) return u._id
+                else {
+                    const parts = date_connection.split(/[\s,\/:]+/)
+                    const [day, month, year, hour, minutes, seconds] = parts;
+                    const date = new Date(year, month - 1, day, hour, minutes, seconds);
+                    const milliseconds = date.getTime();
+                    if (milliseconds + 172800000 < actualTime) {
+                        return u._id
+                    }
                 }
             })
             const deletedUsers = users.filter((u) => usersToDelete.includes(u._id))

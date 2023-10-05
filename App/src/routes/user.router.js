@@ -15,13 +15,13 @@ router.get('/profile-github', passport.authenticate('github', { scope: ['user:em
 router.post('/logout', isLoggedIn, controllers.logoutUserController)
 
 
-router.get('/get-users', isAdmin, controllers.getUsersController)
+router.get('/list', isAdmin, controllers.getUsersController)
 router.delete('/clear-users', isAdmin, controllers.deleteDisconnectedUsersController)
 
 
 router.post('/forgot-password', controllers.sendMailToRecoverPassword)
 router.post('/restore-password', controllers.restorePasswordController)
-router.post('/:uid/documents', uploader.any, isLoggedIn, controllers.uploadDocumentsController)
+router.post('/:uid/documents', uploader.any(), isLoggedIn, controllers.uploadDocumentsController)
 router.post('/premium/:uid', isLoggedIn, controllers.changeRoleController)
 
 export default router;
