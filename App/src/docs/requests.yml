@@ -71,15 +71,14 @@ components:
         example:
           email: ejohn@example.com
           password: 1234abcd
-      DocumentSchema:
-        type: object
-        properties:
-          reference:
-            type: string
-            description: name of the document referenced
-          document:
-            type: binary
-            description: name of the document
-        example:
-          reference: identificacion
-          document: imagen-identificacion.jpg
+      # DocumentSchema:
+        # type: object
+        # properties:
+        #   reference:
+        #     type: string
+        #     description: name of the document referenced
+        #   document:
+        #     type: string
+        #     format: binary
+        #   example:
+        #   reference: identificacion

@@ -82,7 +82,9 @@ export const sendMailToRecoverPassword = async (req, res, next) => {
             html: `<h1>Hola ${user.name}, presione el siguiente link para recuperar su contraseña</h1>`
         }
         const response = await transporter.sendMail(gmailOptions)
-        res.json({ msg: `El mail ha sido enviado correctamente a ${response.accepted}` })
+        if (response) return httpResponse.Ok(res, `The mail has sent to ${response.accepted}`)
+        else return httpResponse.NotFound(res, 'Mail not sent')
+
     } catch (error) {
         next(error.message)
     }

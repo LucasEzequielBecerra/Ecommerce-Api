@@ -1,21 +1,24 @@
 import factory from "../persistence/factory.js"
+import { HttpResponse } from "../utils/http.response.util.js"
+const httpResponse = new HttpResponse()
 const { userManager } = factory
+
 
 export const isUser = async (req, res, next) => {
     const user = await userManager.getUserById(req.session.passport?.user)
     if (user.role === 'user') next()
-    else res.status(401).json({ msg: 'your role is not correct' });
+    else httpResponse.Unauthorized(res, 'your role is not correct')
 }
 export const isAdmin = async (req, res, next) => {
     const user = await userManager.getUserById(req.session.passport?.user)
     if (user.role === 'admin') next()
-    else res.status(401).json({ msg: 'your are not authorized ' });
+    else httpResponse.Unauthorized(res, 'your role is not correct')
 }
 
 export const isPremium = async (req, res, next) => {
     const user = await userManager.getUserById(req.session.passport?.user)
     if (user.role === 'premium' || user.role === 'admin') next()
-    else res.status(401).json({ msg: 'your are not authorized ' });
+    else httpResponse.Unauthorized(res, 'your role is not correct')
 }
 
 export const cartValidator = async (req, res, next) => {
@@ -24,5 +27,5 @@ export const cartValidator = async (req, res, next) => {
     const cartId = user.cartId && user.cartId.toHexString()
 
     if (cartId === cid || cartId === null) next()
-    else res.status(401).json({ msg: `this cart is not your, your cart is ${user.cartId}` })
+    else httpResponse.Unauthorized(res, `this cart is not your, your cart is ${user.cartId}`)
 }

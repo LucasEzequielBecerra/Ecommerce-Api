@@ -7,7 +7,7 @@ import { isLoggedIn } from "../middlewares/isLoggedIn.js";
 import { isAdmin } from "../middlewares/auth.js";
 
 router.post('/register', passport.authenticate('register'), controllers.registerResponse);
-router.post('/login', passport.authenticate('login'), controllers.loginResponse);
+router.post('/login', passport.authenticate('login', { failureFlash: true }), controllers.loginResponse);
 router.get('/register-github', passport.authenticate('github', { scope: ['user:email'] }))
 router.get('/profile-github', passport.authenticate('github', { scope: ['user:email'] }), controllers.githubResponse)
 

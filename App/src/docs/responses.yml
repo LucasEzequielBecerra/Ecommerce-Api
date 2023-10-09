@@ -1,5 +1,68 @@
 components:
   schemas:
+    responsesWithUserData:
+      type: object
+      properties:
+        status: 
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success
+        data: 
+          type: object
+          example: 
+            email: lucas@gmail.com,
+            name: Lucas Ramos,
+            age: 20,
+            role: user
+
+    responsesWithAllProductsData:
+      type: object
+      properties:
+        status: 
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success
+        data: 
+          type: object
+          example: 
+            $ref: '#/components/schemas/Products/GetAllProducts/example'
+
+    responsesWithProductData:
+      type: object
+      properties:
+        status: 
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success
+        data:
+          example:
+            $ref: '#/components/schemas/Products/Product/example'
+
+    responsesWithMessage:
+      type: object
+      properties:
+        status: 
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success
+        data: 
+          type: string
+          example: Request Ok
+
+    Users:
+      UserRegistered:
+        schema:
+          $ref: '#/components/schemas/Users/responses'
+
+
     Products:
       Product:
         type: object
@@ -29,15 +92,6 @@ components:
           price: 100
           stock: 10
           owner: admin
-
-      AddProduct:
-        type: object
-        properties:
-          message:
-            type: string
-            description: message of status
-        example: 
-          message: Product saved successfully
 
       GetAllProducts:
         type: object 
@@ -91,42 +145,6 @@ components:
           prevLink: null
           nextLink: null
 
-      DeleteProduct:
-        type: object
-        properties:
-          message:
-            type: string
-            description: message about status of delete
-        example:
-          message: Product deleted successfully!
-        
-      ValidationSchemaError:
-        type: object
-        properties:
-          message:
-            type: string
-            description: Mensaje de error de validación de schema
-        example:
-          message: El schema de the product no es válido
-      
-      NotFound:
-        type: object
-        properties:
-          message:
-            type: string
-            description: Mensaje de error de servidor
-          example:
-            message: Error de servidor
-      
-      ErrorGetById:
-        type: object
-        properties:
-          message:
-            type: string
-            description: Mensaje de error no se encuentra noticia
-        example:
-          message: No se encontró noticia con id ----
-    
     Carts:
       Cart:
         type: object
@@ -187,3 +205,32 @@ components:
           amount: 3000
           purchaser: lucas@gmail.com
           _id: 64efd962f96c922ebd79d746
+    
+    Errors:
+      ValidationSchemaError:
+        type: object
+        properties:
+          message:
+            type: string
+            description: Mensaje de error de validación de schema
+            example: El schema de the product no es válido
+      
+      NotFound:
+        type: object
+        properties:
+          message:
+            type: string
+            description: Mensaje de error de servidor
+          example:
+            message: Error de servidor
+      
+      ErrorGetById:
+        type: object
+        properties:
+          message:
+            type: string
+            description: Mensaje de error no se encuentra noticia
+        example:
+          message: No se encontró noticia con id ----
+    
+

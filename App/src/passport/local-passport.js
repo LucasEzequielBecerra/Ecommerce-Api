@@ -1,5 +1,7 @@
 import UserRepository from "../persistence/daos/repository/user.repository.js";
 const userDao = new UserRepository();
+import { HttpResponse } from "../utils/http.response.util.js";
+const httpResponse = new HttpResponse();
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 
@@ -7,13 +9,14 @@ import { Strategy as LocalStrategy } from 'passport-local';
 const strategyOptions = {
     usernameField: 'email',
     passwordField: 'password',
-    passReqToCallback: true
+    passReqToCallback: true,
+    failureFlash: true,
 };
 
 const register = async (req, email, password, done) => {
     try {
         const user = await userDao.getUserByEmail(email);
-        if (user) return done(null, false);
+        if (user) return done(null, false, { message: 'Usuario ya registrado' });
         const newUser = await userDao.createUser(req.body);
         return done(null, newUser);
 

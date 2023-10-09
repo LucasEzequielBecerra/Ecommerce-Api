@@ -1,4 +1,5 @@
 paths:
+  # USERS
   /api/users/register:
     post:
       tags: 
@@ -16,13 +17,17 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/UserRegistered'
+                $ref: '#/components/schemas/responsesWithMessage'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/users/login:
     post:
       tags: 
@@ -40,13 +45,14 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/UserLogged'
+                $ref: '#/components/schemas/responsesWithUserData'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/users/register-github:
     get:
       tags: 
@@ -58,13 +64,14 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/UserRegisteredWithGithub'
+                $ref: '#/components/schemas/responsesWithUserData'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/users/logout:
     post:
       tags: 
@@ -76,13 +83,14 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/UserLoggedOut'
+                $ref: '#/components/schemas/responsesWithUserData'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/users/list:
     get:
       tags: 
@@ -94,13 +102,14 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/UsersList'
+                $ref: '#/components/schemas/responsesWithUserData'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/users/clear-users:
     delete:
       tags: 
@@ -112,13 +121,14 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/UsersDeleted'
+                $ref: '#/components/schemas/responsesWithMessage'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/users/forgot-password:
     post:
       tags: 
@@ -144,13 +154,14 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/EmailSent'
+                $ref: '#/components/schemas/responsesWithMessage'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/users/restore-password:
     post:
       tags: 
@@ -168,13 +179,14 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/PasswordChanged'
+                $ref: '#/components/schemas/responsesWithMessage'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/users/{uid}/documents:
     post:
       tags: 
@@ -182,16 +194,28 @@ paths:
       summary: Upload documents
       parameters:
         - in: path
-          name: pid
+          name: uid
           required: true
           description: string id required
           schema:
             type: string
       requestBody:
         content:
-          application/form-data:
-            schema: 
-              $ref: '#/components/parameters/schemas/DocumentSchema'
+          multipart/form-data:
+            schema:
+              type: object 
+              required:
+                - reference
+                - document
+              properties:
+                reference:
+                  type: string
+                  description: Document reference
+                  required: true
+                document: 
+                  type: string
+                  format: binary
+                  description: Document to upload
         required: true
       responses:
         200:
@@ -199,13 +223,14 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/UploadDocs'
+                $ref: '#/components/schemas/responsesWithUserData'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/users/premium/{uid}:
     post:
       tags: 
@@ -213,7 +238,7 @@ paths:
       summary: Change role
       parameters:
         - in: path
-          name: pid
+          name: uid
           required: true
           description: string id required
           schema:
@@ -224,14 +249,15 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Users/RoleChanged'
+                $ref: '#/components/schemas/responsesWithMessage'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
 
+  #PRODUCTS
   /api/products:
     post:
       tags: 
@@ -249,13 +275,13 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Products/AddProduct'
+                $ref: '#/components/schemas/responsesWithMessage'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
     get:
       tags:
       - Products
@@ -266,13 +292,13 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Products/GetAllProducts'
+                $ref: '#/components/schemas/responsesWithAllProductsData'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
     delete:
       tags:
       - Products
@@ -283,13 +309,14 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Products/DeleteAllProducts'
+                $ref: '#/components/schemas/responsesWithMessage'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
+  
   /api/products/{pid}:
     get:
       tags:
@@ -308,13 +335,13 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Products/Product'
+                $ref: '#/components/schemas/responsesWithProductData'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:  
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
     delete:
       tags:
       - Products
@@ -332,14 +359,15 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Products/DeleteProduct'
+                $ref: '#/components/schemas/responsesWithMessage'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
   
+  #CARTS
   /api/carts/tickets:
     get:
       tags:
@@ -354,10 +382,10 @@ paths:
                 $ref: '#/components/schemas/Carts/Ticket'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
   
   /api/carts/{cid}:
     get:
@@ -380,10 +408,10 @@ paths:
                 $ref: '#/components/schemas/Carts/Cart'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:  
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
     delete:
       tags:
       - Carts
@@ -404,10 +432,10 @@ paths:
                 $ref: '#/components/schemas/Carts/Cart'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
   
   /api/carts/{cid}/purchase:
     post:
@@ -430,10 +458,10 @@ paths:
                 $ref: '#/components/schemas/Carts/Ticket'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:  
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
 
   /api/carts/{cid}/products/{pid}:
     put:
@@ -462,10 +490,10 @@ paths:
                 $ref: '#/components/schemas/Carts/Cart'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:  
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
     delete:
       tags:
       - Carts
@@ -492,8 +520,8 @@ paths:
                 $ref: '#/components/schemas/Carts/Cart'
         404:
           description: Error in the validation of the parameters
-          $ref: '#/components/schema/Products/ValidationSchemaError'
+          $ref: '#/components/schema/Errors/ValidationSchemaError'
         500:  
           description: Error on the server
-          $ref: '#/components/schema/Products/NotFound'
+          $ref: '#/components/schema/Errors/NotFound'
 
