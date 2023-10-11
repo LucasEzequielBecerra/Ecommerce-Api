@@ -26,6 +26,6 @@ export const cartValidator = async (req, res, next) => {
     const user = await userManager.getUserById(req.session.passport?.user)
     const cartId = user.cartId && user.cartId.toHexString()
 
-    if (cartId === cid || cartId === null) next()
+    if (cartId === cid) next()
     else httpResponse.Unauthorized(res, `this cart is not your, your cart is ${user.cartId}`)
 }

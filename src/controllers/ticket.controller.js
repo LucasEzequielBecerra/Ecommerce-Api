@@ -21,7 +21,7 @@ export const createTicketsController = async (req, res, next) => {
 export const getAllTicketsController = async (req, res, next) => {
     try {
         const tickets = await services.getAllTicketsService()
-        if (tickets) return httpResponse.Ok(res, "Tickets founded")
+        if (tickets) return httpResponse.Ok(res, tickets, "Tickets founded")
         else return httpResponse.NotFound(res, 'Tickets not found')
     } catch (error) {
         next(error.message)

@@ -29,7 +29,23 @@ components:
         data: 
           type: object
           example: 
-            $ref: '#/components/schemas/Products/GetAllProducts/example'
+            status: success,
+            payload:
+            -
+              _id: 64de85872fa2c22a2a3f4237
+              name: mañanita
+              description: yerba
+              price: 200
+              stock: 30
+              owner: admin
+            totalPages: 1
+            prevPage: null
+            nextPage: null
+            page: 1
+            hasPrevPage: false
+            hasNextPage: false
+            prevLink: null
+            nextLink: null
 
     responsesWithProductData:
       type: object
@@ -42,7 +58,47 @@ components:
           example: success
         data:
           example:
-            $ref: '#/components/schemas/Products/Product/example'
+            id: 64de85872fa2c22a2a3f4237
+            name: mañanita
+            description: yerba
+            price: 100
+            stock: 10
+            owner: admin
+
+    responsesWithTicketData:
+      type: object
+      properties:
+        status: 
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success
+        data:
+          example:
+          -
+            code: llyenw2d1khwv3gma
+            purchase_datetime: 2023-08-31T00:05:54.000Z
+            cart: 64dd59615d4e5a61401ee97a
+            amount: 3000
+            purchaser: lucas@gmail.com
+            _id: 64efd962f96c922ebd79d746
+
+    responsesWithCartData:
+      type: object
+      properties:
+        status: 
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success
+        data:
+          example:
+            _id: 64dd59615d4e5a61401ee97a
+            total: 3000
+            products:
+            -
 
     responsesWithMessage:
       type: object
@@ -57,155 +113,39 @@ components:
           type: string
           example: Request Ok
 
-    Users:
-      UserRegistered:
-        schema:
-          $ref: '#/components/schemas/Users/responses'
 
-
-    Products:
-      Product:
-        type: object
-        properties:
-          id:
-            type: string
-            description: Id of the product
-          name:
-            type: string
-            description: Name of the product
-          description:
-            type: string
-            description: Description of the product
-          price:
-            type: number
-            description: Price of the product
-          stock:
-            type: number
-            description: Stock of the product
-          owner:
-            type: string
-            description: Owner of the product
-        example:
-          id: 64de85872fa2c22a2a3f4237
-          name: mañanita
-          description: yerba
-          price: 100
-          stock: 10
-          owner: admin
-
-      GetAllProducts:
-        type: object 
-        properties:
-          status:
-            type: string
-            description: Status of requested products
-          payload:
-            type: array
-            items:
-              $ref: '#/components/schemas/Products/Product'
-          totalPages:
-            type: number
-            description: Total pages of products
-          prevPage:
-            type: number
-            description: Previous page of products
-          nextPage:
-            type: number
-            description: Next page of products
-          page:
-            type: number
-            description: Page of products
-          hasPrevPage:
-            type: boolean
-            description: Has Previus Page of products
-          hasNextPage:
-            type: boolean
-            description: Has Next Page of Products
-          prevLink:
-            type: string
-            description: Link to previous page of products
-          nextLink:
-            type: string 
-            description: Link to next page of products
-        example:
-          status: success,
-          payload:
-            _id: 64de85872fa2c22a2a3f4237
-            name: mañanita
-            description: yerba
-            price: 200
-            stock: 30
-            owner: admin
-          totalPages: 1
-          prevPage: null
-          nextPage: null
-          page: 1
-          hasPrevPage: false
-          hasNextPage: false
-          prevLink: null
-          nextLink: null
-
-    Carts:
-      Cart:
-        type: object
-        properties:
-          _id:
-            type: string
-            description: id of the cart
-          total: 
-            type: number
-            description: total mount of the purchase
-          products:
-            type: array
-            items:
-              type: object
-              properties:
-                pid:
-                  type: string
-                  description: id of the products
-                quantity:
-                  type: number
-                  description: quantity of the products
-                price:
-                  type: number
-                  description: price of the product
-        example:
-          _id: 64dd59615d4e5a61401ee97a
-          total: 3000
-          products:
-          -
-            pid: 64e515945ceccf58201d6ddf
-            quantity: 6
-            price: 500
-      Ticket:
-        type: object
-        properties: 
-          code: 
-            type: string
-            description: unique code of the ticket
-          purchase_datetime:
-            type: date
-            descrption: datetime of the purchase
-          cart: 
-            type: string
-            description: id of the cart
-          amount:
-            type: number
-            description: amount of the cart
-          purchaser:
-            type: string
-            description: mail of the purchaser
-          _id: 
-            type: string
-            description: id of the purchase
-        example:
-          code: llyenw2d1khwv3gma
-          purchase_datetime: 2023-08-31T00:05:54.000Z
-          cart: 64dd59615d4e5a61401ee97a
-          amount: 3000
-          purchaser: lucas@gmail.com
-          _id: 64efd962f96c922ebd79d746
-    
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: id of the cart
+        total: 
+          type: number
+          description: total mount of the purchase
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              pid:
+                type: string
+                description: id of the products
+              quantity:
+                type: number
+                description: quantity of the products
+              price:
+                type: number
+                description: price of the product
+      example:
+        _id: 64dd59615d4e5a61401ee97a
+        total: 3000
+        products:
+        -
+          pid: 64e515945ceccf58201d6ddf
+          quantity: 6
+          price: 500
+      
     Errors:
       ValidationSchemaError:
         type: object

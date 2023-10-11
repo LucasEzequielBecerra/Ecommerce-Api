@@ -17,9 +17,8 @@ export default class TicketManagerMongo {
     async createTicket(uid) {
         try {
             const { email, cartId } = await UserModel.findById(uid)
-            if (cartId === undefined) throw new Error('Invalid')
+            if (!cartId) return false
             const { total } = await CartModel.findById(cartId.toHexString())
-
             if (total === 0) throw new Error('Your cart has no items')
             const newTicket = await TicketModel.create({
                 code: await newTicketCode(),

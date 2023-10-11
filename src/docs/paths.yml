@@ -379,7 +379,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Carts/Ticket'
+                $ref: '#/components/schemas/responsesWithTicketData'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Errors/ValidationSchemaError'
@@ -405,7 +405,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Carts/Cart'
+                $ref: '#/components/schemas/responsesWithCartData'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Errors/ValidationSchemaError'
@@ -429,7 +429,7 @@ paths:
           content: 
             application/json:
               schema: 
-                $ref: '#/components/schemas/Carts/Cart'
+                $ref: '#/components/schemas/responsesWithCartData'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Errors/ValidationSchemaError'
@@ -455,7 +455,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Carts/Ticket'
+                $ref: '#/components/schemas/responsesWithTicketData'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Errors/ValidationSchemaError'
@@ -487,7 +487,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Carts/Cart'
+                $ref: '#/components/schemas/responsesWithCartData'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Errors/ValidationSchemaError'
@@ -517,7 +517,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Carts/Cart'
+                $ref: '#/components/schemas/responsesWithCartData'
         404:
           description: Error in the validation of the parameters
           $ref: '#/components/schema/Errors/ValidationSchemaError'
