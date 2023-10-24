@@ -24,7 +24,7 @@
     "winston": "^3.10.0",
     "winston-mongodb": "^5.1.1"
   },
-  "name": "02-first-practice",
+  "name": "Final-Backend-Project",
   "version": "1.0.0",
   "main": "src/server.js",
   "type": "module",

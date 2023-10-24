@@ -10,7 +10,7 @@ let productManager;
 let cartManager;
 let ticketManager;
 let mongoStoreString
-let persistence = process.argv[2];
+let persistence = 'mongo'
 
 switch (persistence) {
     case "mongo":
