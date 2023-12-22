@@ -2,7 +2,7 @@
 
 Hello, I'm Lucas Ramos and this is my final backend project to finish my degree as a full stack programmer.
 
-[Deploy](https://backend-coderhouse-834o-dev.fl0.io/docs)
+[Deploy](https://ecommerce-api-dev-ftqj.1.us-1.fl0.io)
 
 ## Built with
 - Node
