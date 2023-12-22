@@ -2,7 +2,7 @@
 
 Hello, I'm Lucas Ramos and this is my final backend project to finish my degree as a full stack programmer.
 
-[Deploy](https://ecommerce-api-dev-ftqj.1.us-1.fl0.io)
+[Deploy](https://ecommerce-api-dev-ftqj.1.us-1.fl0.io/docs)
 
 ## Built with
 - Node
