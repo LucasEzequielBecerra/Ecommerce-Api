@@ -1,6 +1,6 @@
 # Final Backend Project - Coderhouse
 
-Hello, I'm Lucas Ramos and this is my final backend project to finish my degree as a full stack programmer.
+Hello, I'm Lucas Ramos and this is my final backend project to finish my degree as a full stack programmer. This project is a e-commerce API for add and manage users and products
 
 [Deploy](https://ecommerce-api-dev-ftqj.1.us-1.fl0.io/docs)
 
