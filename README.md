@@ -2,7 +2,7 @@
 
 Hello, I'm Lucas Ramos and this is my final backend project to finish my degree as a full stack programmer. This project is a e-commerce API for add and manage users and products
 
-[Deploy](https://ecommerce-api-dev-txxg.1.us-1.fl0.io)
+[Deploy](https://ecommerce-api-dev-txxg.1.us-1.fl0.io/docs)
 
 ## Built with
 - Node
